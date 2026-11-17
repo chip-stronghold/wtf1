@@ -1,6 +1,6 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import type { Tokens } from '../../data/skins'
-import { BETS, EVENTS, FOOTER, GAMES, HERO_PICKS, JACKPOT, PROVIDERS, STREAMERS, type Game } from '../../data/demo'
+import { BETS, EVENTS, FOOTER, HERO_PICKS, JACKPOT, PROVIDERS, STREAMERS, STUDIO_GAMES, type Game } from '../../data/demo'
 import { asset } from '../../lib/assets'
 import { Icon, Svg } from './icons'
 
@@ -12,7 +12,8 @@ import { Icon, Svg } from './icons'
 
 const K_FOR: Record<number, number> = { 1440: 1, 2560: 1.5, 3440: 1.65 }
 const t = (name: string) => `var(--token-${name})`
-const LOGO = asset('brand/wtf-logo-white.svg')
+/** The WTF GAMES pill logo (brand green). */
+const LOGO = asset('brand/wtf-watermark-green.svg')
 
 /* ------------------------------------------------------------------ shared */
 
@@ -41,7 +42,7 @@ function Toggle({ on }: { on?: boolean }) {
 function Header({ mobile }: { mobile: boolean }) {
   return (
     <div className="vglass" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 6, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: mobile ? '0 12px' : '0 24px', borderWidth: '0 0 1px' }}>
-      <img src={LOGO} alt="WTF Games" style={{ height: mobile ? 22 : 26, display: 'block' }} />
+      <img src={LOGO} alt="WTF Games" style={{ height: mobile ? 26 : 30, display: 'block' }} />
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <button aria-label="Settings" style={{ width: 36, height: 36, borderRadius: '50%', display: 'grid', placeItems: 'center', background: t('brand-secondary-24'), color: t('brand-primary-1-600') }}>
           <Svg d={Icon.gear} size={17} stroke={2} />
@@ -175,13 +176,13 @@ function TopGames({ mobile }: { mobile: boolean }) {
       <SectionHead title="Top" icon={<Svg d={Icon.dice} size={18} stroke={2} />} />
       {mobile ? (
         <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, auto)', gridAutoColumns: 'calc((100% - 12px) / 2.25)', gap: 12, overflowX: 'auto', margin: '0 -16px', padding: '0 16px' }}>
-          {GAMES.map((g) => (
+          {STUDIO_GAMES.map((g) => (
             <GameTile key={g.name} game={g} />
           ))}
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 14 }}>
-          {GAMES.map((g) => (
+          {STUDIO_GAMES.slice(0, 12).map((g) => (
             <GameTile key={g.name} game={g} />
           ))}
         </div>

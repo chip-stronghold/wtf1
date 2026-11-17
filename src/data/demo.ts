@@ -27,6 +27,26 @@ export const GAMES: Game[] = [
   { name: 'Sweet Bonanza Candyland', provider: 'Pragmatic Play Live', src: cover('Sweet Bonanza Candyland_800x800_Product logo_Female Dealer.png') },
 ]
 
+/** The "Top" grid: WTF Studios only — character titles first, then the Originals. */
+const studio = (name: string, file: string): Game => ({ name, provider: 'WTF Studios', src: asset(`studios/${file}`) })
+const original = (name: string, file: string): Game => ({ name, provider: 'WTF Studios', src: cover(file) })
+export const STUDIO_GAMES: Game[] = [
+  studio('Royal Flush', 'royal-flush.png'),
+  studio('What The Cluck?', 'what-the-cluck.png'),
+  studio('Lost My Marbles', 'lost-my-marbles.png'),
+  studio('Split The G', 'split-the-g.png'),
+  studio('Numbface', 'numbface.png'),
+  studio('Token Tower', 'token-tower.png'),
+  studio('Bubble Wrap', 'bubble-wrap.png'),
+  original('Plinko', 'WTF_original_plinko.png'),
+  original('Mines', 'WTF_original_mines.png'),
+  original('Towers', 'WTF_original_towers.png'),
+  original('Dice', 'WTF_original_dice.png'),
+  original('Wheel', 'WTF_original_wheel.png'),
+  original('Keno', 'WTF_original_keno.png'),
+  original('LaunchX', 'WTF_original_launchx.png'),
+]
+
 /** "What are you playing today?" — five picks, the middle one highlighted. */
 export const HERO_PICKS: Game[] = [GAMES[3], GAMES[0], GAMES[2], GAMES[1], GAMES[6]]
 
