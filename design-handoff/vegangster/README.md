@@ -13,6 +13,7 @@ What they *do* have (per their CPO, iGaming Expert, 2 Nov 2026):
 
 Live playground: https://wtf1-nine.vercel.app/?area=tokens (repo chip-stronghold/wtf1) —
 three skin directions on a token-only component kit, with a token sheet and Copy-CSS export.
+AJ picked **V3 Carbon** (17 Nov 2026): graphite surfaces, magenta CTA, green reserved for wins.
 
 Files here:
 - `demo-theme.vegangster.css` — their demo brand's token file, verbatim.

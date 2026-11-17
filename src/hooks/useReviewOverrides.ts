@@ -1,5 +1,5 @@
 import { REVIEW_AREAS, SHIPPED_HERO, SHOW_CONTROLS, type HeroConcept, type ProfileVersion, type ReviewScreen } from '../config'
-import type { SkinId } from '../data/skins'
+import { SKIN_PICK, type SkinId } from '../data/skins'
 
 /**
  * Review-only overrides read once from the URL query string. Lets a reviewer
@@ -81,7 +81,7 @@ export function getReviewOverrides(): ReviewOverrides {
   }
 
   const skinParam = Number(params.get('skin'))
-  const skin: SkinId = skinParam >= 1 && skinParam <= 3 ? (skinParam as SkinId) : 1
+  const skin: SkinId = skinParam >= 1 && skinParam <= 3 ? (skinParam as SkinId) : (SKIN_PICK ?? 1)
   const sheet = on('sheet')
   const loggedIn = on('logged')
 

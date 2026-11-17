@@ -1,33 +1,43 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { WALLET } from '../../config'
 import type { Tokens } from '../../data/skins'
+import { asset, cover } from '../../lib/assets'
 import { Icon, Svg } from '../casino/parts'
 
 /**
  * A Vegangster-shaped casino frontend built ONLY on Vegangster token names.
  * Nothing in here hard-codes a colour, radius or font: swap the token set and
- * the whole surface restyles. Artwork is placeholder gradients — no game art.
+ * the whole surface restyles. Game tiles use the real covers from /uploads.
  */
 
 const K_FOR: Record<number, number> = { 1440: 1, 2560: 1.5, 3440: 1.65 }
 const t = (name: string) => `var(--token-${name})`
 
-const GAMES = [
-  { name: 'Gates of Olympus', provider: 'Pragmatic Play', g: 1 },
-  { name: 'Sweet Bonanza', provider: 'Pragmatic Play', g: 2 },
-  { name: 'Book of Dead', provider: "Play'n GO", g: 3 },
-  { name: 'Wanted Dead or a Wild', provider: 'Hacksaw', g: 1 },
-  { name: 'Plinko', provider: 'WTF Originals', g: 2 },
-  { name: 'Mines', provider: 'WTF Originals', g: 3 },
-  { name: 'Crazy Time', provider: 'Evolution', g: 1 },
-  { name: 'Big Bass Splash', provider: 'Pragmatic Play', g: 2 },
+interface GameRef {
+  name: string
+  provider: string
+  src: string
+}
+const GAMES: GameRef[] = [
+  { name: 'Gates of Olympus', provider: 'Pragmatic Play', src: cover('Gates of Olympus_600x600.png') },
+  { name: 'Sweet Bonanza 1000', provider: 'Pragmatic Play', src: cover('Sweet Bonanza 1000_800x800_EN.png') },
+  { name: 'Plinko', provider: 'WTF Originals', src: cover('WTF_original_plinko.png') },
+  { name: 'Big Bass Splash', provider: 'Pragmatic Play', src: cover('BigBassSplash.png') },
+  { name: 'Mines', provider: 'WTF Originals', src: cover('WTF_original_mines.png') },
+  { name: 'Transformers', provider: 'Partner studio', src: cover('WG_Transformers_Thumbnail_1200x1200px_en.jpg') },
+  { name: 'Mega Wheel', provider: 'Pragmatic Play Live', src: cover('Mega Wheel_Animated_No_Logo_800x800_67.png') },
+  { name: 'Overdose', provider: 'Partner studio', src: cover('WG_Overdose_Thumbnails_600x600px_en -2-.png') },
+  { name: 'Dice City', provider: 'Pragmatic Play Live', src: cover('Dice City_Product logo_800x800_female dealer_EN.png') },
+  { name: 'Towers', provider: 'WTF Originals', src: cover('WTF_original_towers.png') },
+  { name: 'Ivy', provider: 'Partner studio', src: cover('WG_Ivy_Thumbnails_1200x1200px_en.jpg') },
+  { name: 'Sweet Bonanza Candyland', provider: 'Pragmatic Play Live', src: cover('Sweet Bonanza Candyland_800x800_Product logo_Female Dealer.png') },
 ]
 const CATS = ['Lobby', 'Originals', 'Slots', 'Live casino', 'Game shows', 'Crash', 'New']
 const LEADERS = [
-  { nick: 'degen_dave', game: 'Gates of Olympus', bet: '$12.00', win: '$1,840.00', x: '153×' },
-  { nick: 'mrs_whale', game: 'Sweet Bonanza', bet: '$40.00', win: '$960.00', x: '24×' },
-  { nick: 'plinko_pete', game: 'Plinko', bet: '$5.00', win: '$410.50', x: '82×' },
-  { nick: 'softhands', game: 'Crazy Time', bet: '$20.00', win: '$300.00', x: '15×' },
+  { nick: 'degen_dave', game: GAMES[0], bet: '$12.00', win: '$1,840.00', x: '153×' },
+  { nick: 'mrs_whale', game: GAMES[1], bet: '$40.00', win: '$960.00', x: '24×' },
+  { nick: 'plinko_pete', game: GAMES[2], bet: '$5.00', win: '$410.50', x: '82×' },
+  { nick: 'softhands', game: GAMES[6], bet: '$20.00', win: '$300.00', x: '15×' },
 ]
 
 /* ------------------------------------------------------------------ bits */
@@ -68,57 +78,50 @@ function SectionHead({ title, icon, action = 'See all' }: { title: string; icon?
   )
 }
 
-function Banner({ compact }: { compact?: boolean }) {
+/**
+ * Promo banners are finished 1104 × 674 artworks with their copy baked in, so
+ * they are shown whole (lobby convention): a 3-up grid on desktop, a snap rail
+ * on mobile. Only the frame (radius, border, surface) comes from tokens.
+ */
+const BANNERS = [
+  { file: 'banner_vip.png', alt: 'WTF VIP — earn while you play' },
+  { file: 'banner_bigbass.png', alt: 'Big Bass — 25 free spins' },
+  { file: 'banner_draw.png', alt: 'Free to play — $1,000 weekly draw' },
+]
+const BANNER_RATIO = '1104 / 674'
+
+function BannerTile({ file, alt }: { file: string; alt: string }) {
   return (
-    <div
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: 20,
-        minHeight: compact ? 190 : 260,
-        background: t('brand-constructor-bento-gradient-1'),
-        border: `1px solid ${t('brand-secondary-6')}`,
-        display: 'flex',
-        alignItems: 'flex-end',
-        padding: compact ? 18 : 32,
-      }}
-    >
-      <div style={{ position: 'absolute', inset: 0, background: t('brand-gradient-8') }} />
-      <div
-        style={{
-          position: 'absolute',
-          right: compact ? -40 : 40,
-          top: compact ? -30 : -10,
-          width: compact ? 200 : 300,
-          height: compact ? 200 : 300,
-          borderRadius: '50%',
-          background: t('brand-constructor-bento-gradient-2'),
-          opacity: 0.38,
-          filter: 'blur(6px)',
-        }}
-      />
-      <div style={{ position: 'relative', maxWidth: 520 }}>
-        <span className="vlabel" style={{ background: t('brand-secondary-14'), color: t('brand-primary-1-600'), marginBottom: 10 }}>
-          Welcome offer
-        </span>
-        <div className="vh" style={{ fontSize: compact ? t('typography-size-3xl') : t('typography-size-5xl'), marginBottom: 8 }}>
-          200% up to $2,000
-          <br />+ 200 free spins
+    <button style={{ position: 'relative', aspectRatio: BANNER_RATIO, borderRadius: 16, overflow: 'hidden', background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}`, flex: '0 0 auto' }}>
+      <img src={asset(file)} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+    </button>
+  )
+}
+
+function Banners({ compact }: { compact?: boolean }) {
+  if (compact) {
+    return (
+      <div style={{ display: 'grid', gap: 10 }}>
+        <div className="no-scrollbar" style={{ display: 'flex', gap: 12, overflowX: 'auto', scrollSnapType: 'x mandatory', margin: '0 -16px', padding: '0 16px' }}>
+          {BANNERS.map((b) => (
+            <div key={b.file} style={{ width: 'calc(100% - 32px)', flex: '0 0 auto', scrollSnapAlign: 'start' }}>
+              <BannerTile {...b} />
+            </div>
+          ))}
         </div>
-        <div style={{ fontSize: compact ? t('typography-size-md') : t('typography-size-lg'), color: t('brand-primary-1-500'), marginBottom: 16 }}>
-          Across your first three deposits. Crypto or card, instant.
-        </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button className="vbtn" style={{ background: t('brand-button-banner-normal'), color: t('brand-button-banner-text') }}>
-            Claim bonus
-          </button>
-          {!compact && (
-            <button className="vbtn" style={{ background: t('brand-secondary-14'), color: t('brand-primary-1-600') }}>
-              Terms
-            </button>
-          )}
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+          {BANNERS.map((b, i) => (
+            <span key={b.file} style={{ width: i === 0 ? 18 : 6, height: 6, borderRadius: 999, background: i === 0 ? t('brand-brand-color-1-500') : t('brand-secondary-2') }} />
+          ))}
         </div>
       </div>
+    )
+  }
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
+      {BANNERS.map((b) => (
+        <BannerTile key={b.file} {...b} />
+      ))}
     </div>
   )
 }
@@ -137,59 +140,45 @@ function CategoryTabs() {
   )
 }
 
-function GameCard({ game, h }: { game: (typeof GAMES)[number]; h: number }) {
+/** Square cover tile with the caption below it, the way Vegangster / Shuffle lay out game rails. */
+function GameCard({ game }: { game: GameRef }) {
   return (
-    <button
-      style={{
-        position: 'relative',
-        height: h,
-        borderRadius: 14,
-        overflow: 'hidden',
-        background: t(`brand-constructor-bento-gradient-${game.g}`),
-        border: `1px solid ${t('brand-secondary-6')}`,
-        textAlign: 'left',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: 12,
-      }}
-    >
-      <div style={{ position: 'absolute', inset: 0, background: t('brand-gradient-11') }} />
-      <div className="vh" style={{ position: 'absolute', top: 10, left: 12, fontSize: 44, opacity: 0.18, letterSpacing: '-0.05em' }}>
-        {game.name.slice(0, 1)}
+    <button style={{ display: 'grid', gap: 8, textAlign: 'left', minWidth: 0 }}>
+      <div style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 12, overflow: 'hidden', background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}` }}>
+        <img src={game.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <span
+          style={{
+            position: 'absolute',
+            right: 8,
+            bottom: 8,
+            width: 20,
+            height: 20,
+            borderRadius: '50%',
+            background: t('brand-secondary-14'),
+            color: t('brand-primary-1-600'),
+            display: 'grid',
+            placeItems: 'center',
+            fontSize: 11,
+            fontWeight: 700,
+            fontStyle: 'italic',
+          }}
+        >
+          i
+        </span>
       </div>
-      <div style={{ position: 'relative' }}>
-        <div className="vc" style={{ fontSize: t('typography-size-lg'), lineHeight: 1.15 }}>{game.name}</div>
-        <div className="vfaint" style={{ fontSize: t('typography-size-sm'), marginTop: 3 }}>{game.provider}</div>
+      <div style={{ minWidth: 0 }}>
+        <div className="vc" style={{ fontSize: t('typography-size-md'), lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{game.name}</div>
+        <div className="vfaint" style={{ fontSize: t('typography-size-sm'), marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{game.provider}</div>
       </div>
-      <span
-        style={{
-          position: 'absolute',
-          right: 10,
-          bottom: 10,
-          width: 20,
-          height: 20,
-          borderRadius: '50%',
-          background: t('brand-secondary-24'),
-          color: t('brand-primary-1-400'),
-          display: 'grid',
-          placeItems: 'center',
-          fontSize: 11,
-          fontWeight: 700,
-          fontStyle: 'italic',
-        }}
-      >
-        i
-      </span>
     </button>
   )
 }
 
-function GameGrid({ cols, h }: { cols: number; h: number }) {
+function GameGrid({ cols, count }: { cols: number; count: number }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, gap: 12 }}>
-      {GAMES.slice(0, cols === 2 ? 6 : 8).map((g) => (
-        <GameCard key={g.name} game={g} h={h} />
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, gap: cols > 4 ? 16 : 12 }}>
+      {GAMES.slice(0, count).map((g) => (
+        <GameCard key={g.name} game={g} />
       ))}
     </div>
   )
@@ -235,16 +224,16 @@ function Toggle({ on }: { on?: boolean }) {
 
 function BonusCard() {
   return (
-    <div className="vcard" style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 14, height: '100%', justifyContent: 'space-between', background: t('brand-constructor-bonus-gradient-2') }}>
+    <div className="vcard" style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 14, height: '100%', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span className="vlabel" style={{ background: t('brand-secondary-14'), color: t('brand-primary-1-600') }}>Active bonus</span>
+        <span className="vlabel" style={{ background: t('brand-glass-effect-brand'), color: t('brand-brand-color-1-300') }}>Active bonus</span>
         <span className="vfaint" style={{ fontSize: t('typography-size-sm') }}>2d 14h left</span>
       </div>
       <div>
         <div className="vh" style={{ fontSize: t('typography-size-2xl') }}>Reload 50% · $250</div>
         <div className="vmuted" style={{ fontSize: t('typography-size-md'), marginTop: 4 }}>Wagered $1,440 of $2,000</div>
       </div>
-      <div style={{ height: 8, borderRadius: 999, background: t('brand-secondary-14'), overflow: 'hidden' }}>
+      <div style={{ height: 8, borderRadius: 999, background: t('brand-secondary-2'), overflow: 'hidden' }}>
         <div style={{ width: '72%', height: '100%', borderRadius: 999, background: t('brand-brand-color-1-500') }} />
       </div>
       <button className="vbtn vbtn-primary" style={{ alignSelf: 'flex-start' }}>
@@ -265,11 +254,11 @@ function Leaderboard({ rows = 4 }: { rows?: number }) {
         ))}
       </div>
       {LEADERS.slice(0, rows).map((r, i) => (
-        <div key={r.nick} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', borderTop: i ? `1px solid ${t('brand-secondary-6')}` : 'none' }}>
-          <div style={{ width: 32, height: 32, borderRadius: 10, background: t(`brand-constructor-bento-gradient-${(i % 3) + 1}`), flex: '0 0 auto' }} />
+        <div key={r.nick} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderTop: i ? `1px solid ${t('brand-secondary-6')}` : 'none' }}>
+          <img src={r.game.src} alt="" style={{ width: 34, height: 34, borderRadius: 9, objectFit: 'cover', flex: '0 0 auto', border: `1px solid ${t('brand-secondary-6')}` }} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: t('typography-size-md'), fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{r.nick}</div>
-            <div className="vfaint" style={{ fontSize: t('typography-size-sm') }}>{r.game} · {r.bet}</div>
+            <div className="vfaint" style={{ fontSize: t('typography-size-sm'), overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.game.name} · {r.bet}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div className="vsuccess" style={{ fontSize: t('typography-size-md'), fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{r.win}</div>
@@ -405,7 +394,7 @@ function SideNav() {
         })}
       </div>
       <div style={{ flex: 1 }} />
-      <div className="vcard" style={{ padding: 14, background: t('brand-constructor-bento-gradient-3') }}>
+      <div className="vcard" style={{ padding: 14, background: t('brand-secondary-2') }}>
         <div className="vc" style={{ fontSize: t('typography-size-md') }}>Refer a friend</div>
         <div className="vmuted" style={{ fontSize: t('typography-size-sm'), margin: '4px 0 10px' }}>Earn $50 per deposit</div>
         <button className="vbtn vbtn-primary vbtn-sm">Get link</button>
@@ -460,11 +449,11 @@ export function TokensScreen({ tokens, isDesktop, width, bodyHeight, loggedIn = 
       <div className="veg" style={{ ...vars, position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <MobileHeader />
         <div className="no-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 100px', display: 'grid', gap: 22 }}>
-          <Banner compact />
+          <Banners compact />
           <CategoryTabs />
           <section>
             <SectionHead title="Top games" icon={<Svg d={Icon.slots} size={16} stroke={2.2} />} />
-            <GameGrid cols={2} h={150} />
+            <GameGrid cols={3} count={9} />
           </section>
           <Jackpot />
           <BonusCard />
@@ -490,11 +479,11 @@ export function TokensScreen({ tokens, isDesktop, width, bodyHeight, loggedIn = 
           <TopBar loggedIn={loggedIn} />
           <div className="no-scrollbar" style={{ flex: 1, overflowY: 'auto' }}>
             <div style={{ maxWidth: 1400, margin: '0 auto', padding: '28px 28px 48px', display: 'grid', gap: 28 }}>
-              <Banner />
+              <Banners />
               <CategoryTabs />
               <section>
                 <SectionHead title="Top games" icon={<Svg d={Icon.slots} size={18} stroke={2.2} />} />
-                <GameGrid cols={4} h={200} />
+                <GameGrid cols={6} count={12} />
               </section>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.2fr', gap: 16, alignItems: 'stretch' }}>
                 <Jackpot />

@@ -263,7 +263,7 @@ export const SKINS: Record<SkinId, { palette: Palette; tokens: Tokens }> = {
 }
 
 /** The skin AJ picks for dev (PICK badge). null until chosen. */
-export const SKIN_PICK: SkinId | null = null
+export const SKIN_PICK: SkinId | null = 3
 
 /** Serialise a skin as the `:root { … }` block Vegangster's theme file uses. */
 export function skinToCss(id: SkinId): string {

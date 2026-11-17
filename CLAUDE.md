@@ -15,7 +15,9 @@ Live at https://wtf1-nine.vercel.app. The original review areas are carried acro
 - URL: `?area=tokens&skin=1..3&view=mobile|desktop&sheet=1&logged=1&controls=0`.
 - Fonts stay on Vegangster's default stack: **Korolev is ruled out for this platform**
   (Adobe-licensed). Green-filled buttons always carry **black** text.
-- `SKIN_PICK` in `skins.ts` marks AJ's chosen direction (PICK badge). null until chosen.
+- `SKIN_PICK` in `skins.ts` marks AJ's chosen direction (PICK badge): **3 · Carbon** (picked 17 Nov 2026).
+  Game tiles use the real covers from `public/uploads/WTF Games/`; the banner uses `banner_vip.png`.
+  Keep gradient fills out of cards — flat token surfaces only.
 
 ---
 
