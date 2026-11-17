@@ -1,7 +1,5 @@
 import { useState, type CSSProperties } from 'react'
-import type { ReviewScreen } from '../../config'
 import { PALETTES, SKIN_PICK, skinToCss, type SkinId } from '../../data/skins'
-import { AreaSelect } from '../AreaSelect'
 
 const pillRow: CSSProperties = { display: 'flex', gap: 4, alignItems: 'center', background: '#000', border: '1px solid var(--c-border)', borderRadius: 9999, padding: 4 }
 
@@ -22,22 +20,18 @@ function pill(active: boolean, activeBg: string, activeColor: string): CSSProper
 }
 
 interface Props {
-  screen: ReviewScreen
-  onScreen: (s: ReviewScreen) => void
   skin: SkinId
   onSkin: (s: SkinId) => void
   sheet: boolean
   onSheet: (b: boolean) => void
-  loggedIn: boolean
-  onLoggedIn: (b: boolean) => void
   isDesktop: boolean
   onView: (v: 'mobile' | 'desktop') => void
   desktopWidth: 1440 | 2560 | 3440
   onDesktopWidth: (w: 1440 | 2560 | 3440) => void
 }
 
-/** Review controller for the skin-token directions — mirrors the other control bars. */
-export function TokensControlBar({ screen, onScreen, skin, onSkin, sheet, onSheet, loggedIn, onLoggedIn, isDesktop, onView, desktopWidth, onDesktopWidth }: Props) {
+/** Review controller for the skin-token directions. */
+export function TokensControlBar({ skin, onSkin, sheet, onSheet, isDesktop, onView, desktopWidth, onDesktopWidth }: Props) {
   const [open, setOpen] = useState(true)
   const [copied, setCopied] = useState(false)
 
@@ -59,11 +53,10 @@ export function TokensControlBar({ screen, onScreen, skin, onSkin, sheet, onShee
     <div style={{ width: '100%', maxWidth: 1180, background: '#0e0e12', border: '1px solid var(--c-border)', borderRadius: 16, padding: '14px 16px', boxShadow: '0 10px 30px rgba(0,0,0,.4)' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
         <div style={{ flex: '0 0 auto' }}>
-          <div style={{ fontFamily: 'var(--f-display)', fontWeight: 900, fontSize: 18, textTransform: 'uppercase', lineHeight: 1 }}>Skin tokens — Vegangster</div>
-          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>3 directions · their default type · every token in their own names</div>
+          <div style={{ fontFamily: 'var(--f-display)', fontWeight: 900, fontSize: 18, textTransform: 'uppercase', lineHeight: 1 }}>Vegangster skin — WTF Games</div>
+          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>Their demo, module for module · their default type · every token in their own names</div>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          <AreaSelect screen={screen} onScreen={onScreen} />
           <div style={pillRow}>
             <button onClick={() => onView('mobile')} style={pill(!isDesktop, 'var(--c-green)', '#000')}>Mobile</button>
             <button onClick={() => onView('desktop')} style={pill(isDesktop, 'var(--c-green)', '#000')}>Desktop</button>
@@ -75,18 +68,15 @@ export function TokensControlBar({ screen, onScreen, skin, onSkin, sheet, onShee
               ))}
             </div>
           )}
-          {isDesktop && (
-            <div style={pillRow} title="Header state">
-              <button onClick={() => onLoggedIn(false)} style={pill(!loggedIn, '#fff', '#000')}>Logged out</button>
-              <button onClick={() => onLoggedIn(true)} style={pill(loggedIn, '#fff', '#000')}>Logged in</button>
-            </div>
-          )}
           <div style={pillRow} title="Show every token of the active skin beside the device">
             <button onClick={() => onSheet(!sheet)} style={pill(sheet, 'var(--c-cyan)', '#000')}>Token sheet</button>
           </div>
           <button onClick={copyCss} title="Copy this skin as Vegangster's :root token block" style={{ ...pill(true, copied ? 'var(--c-green)' : '#000', copied ? '#000' : '#fff'), border: '1px solid var(--c-border)', padding: '8px 12px' }}>
             {copied ? 'Copied ✓' : 'Copy CSS'}
           </button>
+          <a href="https://demo.vegangster.com/" target="_blank" rel="noreferrer" style={{ ...pill(true, '#000', 'var(--c-text-muted)'), border: '1px solid var(--c-border)', padding: '8px 12px', textDecoration: 'none' }}>
+            Their demo ↗
+          </a>
           <button onClick={() => setOpen(false)} title="Hide controls" style={{ background: 'transparent', border: '1px solid var(--c-border)', borderRadius: 9999, width: 28, height: 28, color: 'var(--c-text-muted)', cursor: 'pointer', fontSize: 14, lineHeight: 1 }}>×</button>
         </div>
       </div>

@@ -11,8 +11,8 @@ What they *do* have (per their CPO, iGaming Expert, 2 Nov 2026):
 - The frontend is React; theming is one `:root` token file per brand
   (`/media/theme/<brand>.<ts>.css`, ~130 tokens) plus BEM `ui-*` components.
 
-Live playground: https://wtf1-nine.vercel.app/?area=tokens (repo chip-stronghold/wtf1) —
-three skin directions on a token-only component kit, with a token sheet and Copy-CSS export.
+Live playground: https://wtf1-nine.vercel.app (repo chip-stronghold/wtf1) — their demo
+rebuilt module for module on a token-only kit, three skin directions, token sheet, Copy-CSS export.
 AJ picked **V3 Carbon** (17 Nov 2026): graphite surfaces, magenta CTA, green reserved for wins.
 
 Files here:
