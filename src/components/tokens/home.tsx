@@ -210,18 +210,45 @@ export function OddsRow({ odds, labels = ['1', 'X', '2'] }: { odds: string[]; la
   )
 }
 
-export function BetsFeed({ mobile, compact }: { mobile: boolean; compact?: boolean }) {
+export function BetsFeed({ mobile, compact, table }: { mobile: boolean; compact?: boolean; table?: boolean }) {
   const tabs = ['All bets', 'High Rollers', 'Lucky Bets', 'Best Results']
+  const [tab, setTab] = useState(0)
+  const rows = BETS.slice(0, compact ? 4 : mobile ? 6 : table ? 10 : 8)
+  const cell = (w: string) => ({ flex: `0 0 ${w}`, fontSize: t('typography-size-md') } as const)
   return (
     <section className="vcard" style={{ overflow: 'hidden' }}>
       <div className="no-scrollbar" style={{ display: 'flex', gap: 6, padding: 10, overflowX: 'auto', borderBottom: `1px solid ${t('brand-secondary-6')}` }}>
         {tabs.map((l, i) => (
-          <button key={l} className={`vtab${i === 0 ? ' vtab-on' : ''}`} style={{ flex: mobile ? '0 0 auto' : 1, justifyContent: 'center' }}>
+          <button key={l} onClick={() => setTab(i)} className={`vtab${i === tab ? ' vtab-on' : ''}`} style={{ flex: mobile ? '0 0 auto' : 1, justifyContent: 'center' }}>
             {l}
           </button>
         ))}
       </div>
-      {BETS.slice(0, compact ? 4 : mobile ? 6 : 8).map((b, i) => (
+      {table && (
+        <div className="vfaint" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 14px', fontSize: t('typography-size-sm'), fontWeight: 700 }}>
+          <span style={{ flex: 1 }}>Game</span>
+          <span style={cell('26%')}>Player</span>
+          <span style={{ ...cell('14%'), textAlign: 'right' }}>Bet</span>
+          <span style={{ ...cell('14%'), textAlign: 'right' }}>Multiplier</span>
+          <span style={{ ...cell('14%'), textAlign: 'right' }}>Win</span>
+        </div>
+      )}
+      {table
+        ? rows.map((b, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 14px', background: i % 2 ? 'transparent' : t('brand-secondary-2') }}>
+              <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 10, fontSize: t('typography-size-md'), fontWeight: 700 }}>
+                <span style={{ width: 24, height: 24, borderRadius: 7, display: 'grid', placeItems: 'center', background: t('brand-secondary-5'), color: t('brand-brand-color-1-400') }}>
+                  <Svg d={Icon.gift} size={13} stroke={2} />
+                </span>
+                {b.game}
+              </span>
+              <span className="vmuted" style={cell('26%')}>@{b.nick}</span>
+              <span style={{ ...cell('14%'), textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{(Number(b.amount.replace(/,/g, '')) / Math.max(parseFloat(b.mult.slice(1)) || 1, 0.1)).toFixed(2)} <span style={{ color: t('brand-info-500') }}>€</span></span>
+              <span className="vmuted" style={{ ...cell('14%'), textAlign: 'right' }}>{b.mult}</span>
+              <span className="vsuccess" style={{ ...cell('14%'), textAlign: 'right', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{b.amount} <span style={{ color: t('brand-info-500') }}>€</span></span>
+            </div>
+          ))
+        : rows.map((b, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: i % 2 ? 'transparent' : t('brand-secondary-2') }}>
           <span style={{ width: 28, height: 28, borderRadius: 8, display: 'grid', placeItems: 'center', background: t('brand-secondary-5'), color: t('brand-brand-color-1-400'), flex: '0 0 auto' }}>
             <Svg d={Icon.gift} size={14} stroke={2} />
@@ -237,7 +264,7 @@ export function BetsFeed({ mobile, compact }: { mobile: boolean; compact?: boole
             <div className="vfaint" style={{ fontSize: t('typography-size-sm') }}>{b.mult}</div>
           </div>
         </div>
-      ))}
+          ))}
     </section>
   )
 }

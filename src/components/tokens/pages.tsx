@@ -1,13 +1,15 @@
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { BETS, JACKPOT, type Game } from '../../data/demo'
-import { BENTO, CASINO_CHIPS, CASINO_PROMOS, CATALOGUE, CONTESTS, HUB_BANNERS, LIVE_CATALOGUE, LIVE_CHIPS, LOTTERIES, MATCHES, PACK, PREDICTIONS, PREDICTION_CHIPS, PROMO_HERO, PROMO_ICONS, PVP, QUICK_LINKS, SPORTS, SPORT_PROMOS, SPORT_TABS, TOURNAMENTS, type PageId, type PromoCard } from '../../data/pages'
+import { BENTO, CASINO_CHIPS, CASINO_PROMOS, CATALOGUE, CONTESTS, CRASH, DISCOVER, HUB_BANNERS, INOUT, JUST_ADDED, LIVE_CATALOGUE, LIVE_CHIPS, LIVE_RAIL, LOOTBOXES, LOTTERIES, MATCHES, PACK, PAYMENTS, PREDICTIONS, PREDICTION_CHIPS, PROMO_BANNER, PROMO_HERO, PROMO_ICONS, PVP, QUICK_LINKS, SPORTS, SPORT_PROMOS, SPORT_TABS, TICKER, TOURNAMENTS, TRENDING, type PageId, type PromoCard } from '../../data/pages'
+import { asset } from '../../lib/assets'
 import { Icon, Svg } from './icons'
 import { Arrows, Chips, GameGrid, GameTile, PageTitleBar, SectionHead, Toggle, t, type Nav } from './chrome'
-import { JackpotTier, OddsRow, OptIn, Providers, SeoFooter } from './home'
+import { BetsFeed, JackpotBlock, JackpotTier, OddsRow, OptIn, Providers, SeoFooter } from './home'
 
 /** Every page of their demo other than home, each shaped like theirs. */
 
-const rail = (mobile: boolean): CSSProperties => (mobile ? { display: 'flex', gap: 12, overflowX: 'auto', margin: '0 -16px', padding: '0 16px' } : {})
+/** Edge-to-edge horizontal scroller on mobile; callers set their own display (grid or flex). */
+const rail = (mobile: boolean): CSSProperties => (mobile ? { overflowX: 'auto', margin: '0 -16px', padding: '0 16px' } : {})
 
 /* ------------------------------------------------------------------ /casino (hub) */
 
@@ -31,16 +33,17 @@ function HubBanners({ mobile }: { mobile: boolean }) {
   )
 }
 
-function QuickLinks({ nav }: { nav: Nav }) {
-  const icons: ReactNode[] = [Icon.gift, Icon.slots, Icon.tag, Icon.share, Icon.streamer]
+/** Their illustrated quick-link discs — studio art inside a ringed circle. */
+function QuickLinks({ nav, mobile }: { nav: Nav; mobile: boolean }) {
+  const art = [asset('studios/studio-hamster.png'), asset('WTF Games/WTF_original_launchx.png'), asset('studios/royal-flush.png'), asset('studios/what-the-cluck.png'), asset('studios/key-art-hamster-vegas.jpg')]
   return (
-    <div className="no-scrollbar" style={{ display: 'flex', gap: 22, overflowX: 'auto', padding: '4px 2px' }}>
+    <div className="no-scrollbar" style={{ display: 'flex', gap: mobile ? 28 : 30, overflowX: 'auto', padding: '4px 2px', margin: mobile ? '0 -16px' : 0, paddingLeft: mobile ? 16 : 2, paddingRight: mobile ? 16 : 2 }}>
       {QUICK_LINKS.map((q, i) => (
-        <button key={q.label} onClick={() => nav.go(q.page)} style={{ display: 'grid', gap: 8, justifyItems: 'center', flex: '0 0 auto', width: 84 }}>
-          <span style={{ width: 56, height: 56, borderRadius: '50%', display: 'grid', placeItems: 'center', background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}`, color: t('brand-brand-color-1-500') }}>
-            <Svg d={icons[i]} size={22} stroke={2} />
+        <button key={q.label} onClick={() => nav.go(q.page)} style={{ display: 'grid', gap: 10, justifyItems: 'center', flex: '0 0 auto', width: mobile ? 96 : 92 }}>
+          <span style={{ width: mobile ? 74 : 68, height: mobile ? 74 : 68, borderRadius: '50%', overflow: 'hidden', border: `2px solid ${t('brand-brand-color-1-500')}`, boxShadow: `0 0 0 4px ${t('brand-glass-effect-brand')}`, background: t('brand-secondary-2') }}>
+            <img src={art[i]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </span>
-          <span style={{ fontSize: t('typography-size-md'), fontWeight: 600, textAlign: 'center' }}>{q.label}</span>
+          <span style={{ fontSize: t('typography-size-md'), fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap' }}>{q.label}</span>
         </button>
       ))}
     </div>
@@ -51,9 +54,9 @@ function TopWinners({ mobile }: { mobile: boolean }) {
   return (
     <section>
       <SectionHead title="Top Winners" icon={<Svg d={Icon.trophy} size={18} stroke={2} />} right={!mobile && <Arrows />} />
-      <div className="no-scrollbar" style={{ display: 'flex', gap: 10, overflowX: 'auto', margin: mobile ? '0 -16px' : 0, padding: mobile ? '0 16px' : 0 }}>
-        {BETS.slice(0, 5).map((b, i) => (
-          <div key={i} className="vcard" style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px 8px 8px', minWidth: 200 }}>
+      <div className="no-scrollbar" style={{ display: mobile ? 'flex' : 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, overflowX: 'auto', margin: mobile ? '0 -16px' : 0, padding: mobile ? '0 16px' : 0 }}>
+        {BETS.slice(0, 4).map((b, i) => (
+          <div key={i} className="vcard" style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px 8px 8px', minWidth: mobile ? 200 : 0 }}>
             <span style={{ width: 30, height: 30, borderRadius: 8, display: 'grid', placeItems: 'center', background: t('brand-secondary-2'), color: t('brand-brand-color-1-400') }}>
               <Svg d={Icon.gift} size={15} stroke={2} />
             </span>
@@ -72,16 +75,157 @@ function TopWinners({ mobile }: { mobile: boolean }) {
 }
 
 function Bento({ mobile, nav }: { mobile: boolean; nav: Nav }) {
+  // Desktop: Tournaments wide over Live + Sports; Casino, Providers, Promotions tall on the right.
+  const areas = mobile ? `"tour tour" "live sport" "casino prov" "casino promo"` : `"tour tour casino prov promo" "live sport casino prov promo"`
+  const area: Record<string, string> = { Tournaments: 'tour', Live: 'live', Sports: 'sport', Casino: 'casino', Providers: 'prov', Promotions: 'promo' }
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: mobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))', gap: 12 }}>
-      {BENTO.map((b) => (
-        <button key={b.label} onClick={() => nav.go(b.page)} className="vcard" style={{ gridColumn: b.wide ? 'span 2' : undefined, position: 'relative', overflow: 'hidden', aspectRatio: b.wide ? '2.1 / 1' : '1 / 1', textAlign: 'left', padding: 16, display: 'flex', alignItems: 'flex-start' }}>
-          <span className="vh" style={{ position: 'relative', zIndex: 1, fontSize: t('typography-size-xl') }}>{b.label}</span>
-          <img src={b.art} alt="" style={{ position: 'absolute', right: -8, bottom: -8, width: b.wide ? '42%' : '70%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 14, opacity: 0.95 }} />
-          <span style={{ position: 'absolute', inset: 0, background: t('brand-gradient-11'), opacity: 0.5 }} />
-        </button>
-      ))}
+    <div style={{ display: 'grid', gridTemplateColumns: mobile ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))', gridTemplateAreas: areas, gridAutoRows: mobile ? 150 : 170, gap: 12 }}>
+      {BENTO.map((b) => {
+        const tall = b.label === 'Casino' || b.label === 'Providers' || b.label === 'Promotions'
+        return (
+          <button key={b.label} onClick={() => nav.go(b.page)} className="vcard" style={{ gridArea: area[b.label], position: 'relative', overflow: 'hidden', textAlign: 'left', padding: 16, display: 'flex', alignItems: tall ? 'flex-end' : 'flex-start', background: t('brand-secondary-5') }}>
+            {/* art: wide tile → right-centred · tall tile → big and centred above the label · small tile → tucked bottom-right */}
+            <img
+              src={b.art}
+              alt=""
+              style={
+                b.wide
+                  ? { position: 'absolute', right: 18, top: '50%', transform: 'translateY(-50%)', width: '36%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 16 }
+                  : tall && !mobile
+                    ? { position: 'absolute', left: '50%', top: 22, transform: 'translateX(-50%)', width: '72%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 18 }
+                    : { position: 'absolute', right: -8, bottom: -10, width: '62%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 16 }
+              }
+            />
+            <span style={{ position: 'absolute', inset: 0, background: t('brand-gradient-11'), opacity: tall ? 0.7 : 0.5 }} />
+            <span className="vh" style={{ position: 'relative', zIndex: 1, fontSize: t('typography-size-xl'), display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              {b.wide && <Svg d={Icon.star} size={16} stroke={2.2} />}
+              {b.label}
+            </span>
+          </button>
+        )
+      })}
     </div>
+  )
+}
+
+function Lootboxes({ mobile }: { mobile: boolean }) {
+  return (
+    <section>
+      <SectionHead title="Lootboxes" icon={<Svg d={Icon.gift} size={18} stroke={2} />} right={!mobile && <Arrows />} />
+      <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: 'column', gridAutoColumns: mobile ? 'calc((100% - 24px) / 2.3)' : 'calc((100% - 60px) / 6)', gap: 12, overflowX: 'auto', ...rail(mobile) }}>
+        {LOOTBOXES.map((l) => (
+          <button key={l.title} className="vcard" style={{ padding: '12px 10px 10px', display: 'grid', gap: 10, justifyItems: 'center', textAlign: 'center' }}>
+            <img src={l.art} alt="" style={{ width: 72, height: 72, borderRadius: 16, objectFit: 'cover' }} />
+            <span className="vc" style={{ fontSize: t('typography-size-md'), lineHeight: 1.2, minHeight: 30 }}>{l.title}</span>
+            <span className={l.free ? 'vtab' : 'vtab vtab-on'} style={{ height: 30, width: '100%', justifyContent: 'center', fontSize: t('typography-size-sm') }}>
+              {!l.free && <Svg d={Icon.ball} size={13} stroke={2.2} />}
+              {l.price}
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function GameSection({ title, icon, games, mobile, rows = 2, nav }: { title: string; icon: ReactNode; games: Game[]; mobile: boolean; rows?: number; nav: Nav }) {
+  const right = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <button onClick={() => nav.go('slots')} className="vmuted" style={{ fontSize: t('typography-size-md'), fontWeight: 700 }}>
+        See All {mobile && '›'}
+      </button>
+      {!mobile && <Arrows />}
+    </div>
+  )
+  return (
+    <section>
+      <SectionHead title={title} icon={icon} right={right} />
+      {mobile ? (
+        <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: `repeat(${rows}, auto)`, gridAutoColumns: 'calc((100% - 12px) / 2.25)', gap: 12, overflowX: 'auto', margin: '0 -16px', padding: '0 16px' }}>
+          {games.map((g, i) => (
+            <GameTile key={g.name + i} game={g} onOpen={nav.openGame} />
+          ))}
+        </div>
+      ) : (
+        <GameGrid games={games.slice(0, rows * 6)} cols={6} onOpen={nav.openGame} />
+      )}
+    </section>
+  )
+}
+
+/** Their centred main banner (ui-main-banner): art left, kicker + headline + CTA. */
+function PromoBanner({ mobile }: { mobile: boolean }) {
+  return (
+    <div className="vcard" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: mobile ? 16 : 40, padding: mobile ? '18px 16px' : '26px 32px', background: t('brand-secondary-1') }}>
+      <img src={PROMO_BANNER.art} alt="" style={{ width: mobile ? 84 : 132, height: mobile ? 84 : 132, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto', boxShadow: `0 0 0 6px ${t('brand-glass-effect-brand')}` }} />
+      <div style={{ display: 'grid', gap: 8, justifyItems: mobile ? 'start' : 'center', textAlign: mobile ? 'left' : 'center' }}>
+        <span className="vfaint" style={{ fontSize: t('typography-size-sm'), letterSpacing: '.2em', textTransform: 'uppercase', fontWeight: 700 }}>{PROMO_BANNER.kicker}</span>
+        <span className="vh" style={{ fontSize: mobile ? t('typography-size-2xl') : t('typography-size-4xl'), lineHeight: 1 }}>{PROMO_BANNER.title}</span>
+        <button className="vbtn vbtn-primary" style={{ height: 40, padding: '0 28px', marginTop: 4, letterSpacing: '.08em', textTransform: 'uppercase' }}>
+          {PROMO_BANNER.cta}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function LiveRail({ mobile, nav }: { mobile: boolean; nav: Nav }) {
+  return (
+    <section>
+      <SectionHead title="Live Casino" icon={<Svg d={Icon.live} size={18} stroke={2} />} right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><button onClick={() => nav.go('live')} className="vmuted" style={{ fontSize: t('typography-size-md'), fontWeight: 700 }}>See All {mobile && '›'}</button>{!mobile && <Arrows />}</div>} />
+      <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: 'column', gridAutoColumns: mobile ? 'calc((100% - 12px) / 2.15)' : 'calc((100% - 36px) / 4)', gap: 12, overflowX: 'auto', ...rail(mobile) }}>
+        {LIVE_RAIL.map((l) => (
+          <button key={l.name} onClick={() => nav.go('live')} style={{ position: 'relative', aspectRatio: mobile ? '1 / 1' : '16 / 10', borderRadius: 14, overflow: 'hidden', background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}` }}>
+            <img src={l.src} alt={l.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            {l.hot && (
+              <span className="vlabel" style={{ position: 'absolute', top: 8, left: 8, background: t('brand-secondary-14'), color: t('brand-primary-1-600') }}>
+                Hot 🔥
+              </span>
+            )}
+            <span style={{ position: 'absolute', right: 8, bottom: 8, width: 22, height: 22, borderRadius: '50%', background: t('brand-secondary-24'), color: t('brand-primary-1-600'), display: 'grid', placeItems: 'center', fontSize: 11, fontWeight: 700, fontStyle: 'italic' }}>i</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Discover({ mobile, nav }: { mobile: boolean; nav: Nav }) {
+  return (
+    <section>
+      <SectionHead title="Discover" icon={<Svg d={Icon.star} size={18} stroke={2} />} right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><button onClick={() => nav.go('tournaments')} className="vmuted" style={{ fontSize: t('typography-size-md'), fontWeight: 700 }}>See All {mobile && '›'}</button>{!mobile && <Arrows />}</div>} />
+      <div className="no-scrollbar" style={{ display: mobile ? 'flex' : 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, overflowX: 'auto', ...rail(mobile) }}>
+        {DISCOVER.map((c) => (
+          <div key={c.title} style={{ flex: mobile ? '0 0 88%' : undefined }}>
+            <PromoCardView c={c} />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Payments({ mobile }: { mobile: boolean }) {
+  return (
+    <section style={{ display: 'grid', gap: 14 }}>
+      <SectionHead title="Available Payments" icon={<Svg d={Icon.cards} size={18} stroke={2} />} right={<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><button className="vmuted" style={{ fontSize: t('typography-size-md'), fontWeight: 700 }}>See All {mobile && '›'}</button>{!mobile && <Arrows />}</div>} />
+      <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: mobile ? 'column' : 'row', gridTemplateColumns: mobile ? undefined : 'repeat(7, minmax(0, 1fr))', gridTemplateRows: mobile ? 'repeat(2, auto)' : undefined, gridAutoColumns: mobile ? 120 : undefined, gap: 10, overflowX: mobile ? 'auto' : undefined, ...rail(mobile) }}>
+        {PAYMENTS.map((p, i) => (
+          <span key={p + i} className="vcard" style={{ height: 46, display: 'grid', placeItems: 'center', padding: '0 10px', fontSize: t('typography-size-sm'), fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: t('brand-primary-1-500'), whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {p}
+          </span>
+        ))}
+      </div>
+      <div className="no-scrollbar" style={{ display: 'flex', gap: 28, overflowX: 'auto', padding: '10px 14px', borderRadius: 12, background: t('brand-secondary-1'), border: `1px solid ${t('brand-secondary-6')}`, ...rail(mobile) }}>
+        {TICKER.map(([pair, px]) => (
+          <span key={pair} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: t('typography-size-sm'), whiteSpace: 'nowrap' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: t('brand-brand-color-1-500') }} />
+            <b>{pair}</b>
+            <span className="vmuted">{px}</span>
+          </span>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -89,10 +233,22 @@ export function CasinoHubPage({ mobile, nav }: { mobile: boolean; nav: Nav }) {
   return (
     <>
       <HubBanners mobile={mobile} />
-      <QuickLinks nav={nav} />
+      <QuickLinks nav={nav} mobile={mobile} />
       <TopWinners mobile={mobile} />
       <Bento mobile={mobile} nav={nav} />
+      <Chips items={CASINO_CHIPS} search mobile={mobile} />
+      <Lootboxes mobile={mobile} />
+      <GameSection title="Trending Now" icon={<Svg d={Icon.live} size={18} stroke={2} />} games={TRENDING} mobile={mobile} nav={nav} />
       <Providers mobile={mobile} />
+      <GameSection title="Just Added" icon={<Svg d={Icon.slots} size={18} stroke={2} />} games={JUST_ADDED} mobile={mobile} rows={1} nav={nav} />
+      <PromoBanner mobile={mobile} />
+      <LiveRail mobile={mobile} nav={nav} />
+      <Discover mobile={mobile} nav={nav} />
+      <JackpotBlock mobile={mobile} />
+      <GameSection title="Popular Crash" icon={<Svg d={Icon.arrow} size={18} stroke={2} />} games={CRASH} mobile={mobile} nav={nav} />
+      <GameSection title="InOut" icon={<Svg d={Icon.chevronDown} size={18} stroke={2} />} games={INOUT} mobile={mobile} rows={1} nav={nav} />
+      <BetsFeed mobile={mobile} table={!mobile} />
+      <Payments mobile={mobile} />
       <SeoFooter mobile={mobile} />
     </>
   )

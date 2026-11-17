@@ -201,3 +201,49 @@ export const SIGNUP_BONUSES = [
   { title: 'Double Your First', line: 'Bonus: 100%' },
   { title: 'High Roller Boost', line: 'Bonus: 300%' },
 ]
+
+/* ------------------------------------------------------------------ casino hub — lower modules */
+
+export const LOOTBOXES = [
+  { title: 'Free Loot Box', price: 'Login to spin', art: asset('studios/bubble-wrap.png'), free: true },
+  { title: 'Whale Swag', price: '15.00', art: asset('studios/token-tower.png') },
+  { title: 'Free Spins', price: '50.00', art: asset('WTF Games/WTF_original_wheel.png') },
+  { title: 'Super Lootbox', price: '75.00', art: asset('studios/lost-my-marbles.png') },
+  { title: 'Bonus Buy Exclusive', price: '100.00', art: asset('studios/numbface.png') },
+  { title: 'Mega Bonus Buy', price: '250.00', art: asset('studios/royal-flush.png') },
+]
+
+export const TRENDING: Game[] = [...GAMES.slice(0, 6), ...STUDIO_GAMES.slice(0, 6)]
+export const JUST_ADDED: Game[] = [...STUDIO_GAMES.slice(1, 7)]
+export const CRASH: Game[] = [...STUDIO_GAMES.slice(7, 14), ...STUDIO_GAMES.slice(0, 5)]
+export const INOUT: Game[] = [...STUDIO_GAMES.slice(0, 6)]
+
+export const PROMO_BANNER = {
+  kicker: 'Premium casino',
+  title: 'Big wins every day',
+  cta: 'Play now',
+  art: asset('WTF Games/WTF_original_wheel.png'),
+}
+
+export const LIVE_RAIL = [
+  { name: 'Salon Privé Blackjack', hot: true, src: asset('WTF Games/Dice City_Product logo_800x800_female dealer_EN.png') },
+  { name: 'Mega Roulette', hot: false, src: asset('WTF Games/PowerUP Roulette_Product logo_800x800_female dealer.png') },
+  { name: 'Mega Wheel', hot: false, src: asset('WTF Games/Mega Wheel_Animated_No_Logo_800x800_67.png') },
+  { name: 'Sweet Bonanza Candyland', hot: false, src: asset('WTF Games/Sweet Bonanza Candyland_800x800_Product logo_Female Dealer.png') },
+]
+
+export const DISCOVER: PromoCard[] = [
+  { title: 'Hamster Tournament: Feast of the Jungle!', copy: 'Points for higher win streak,…', prize: '$1,099.21', meta: [['Ends in:', '14h 35m']], art: asset('studios/what-the-cluck.png'), players: 0 },
+  { title: 'Game of the Month', copy: 'Plinko — double points all November', prize: '2× points', meta: [['Ends in:', '12d']], art: asset('WTF Games/WTF_original_plinko.png') },
+  { title: 'Claim €160 000!', copy: 'The Wilde Legends Network promotion is in full swing!', prize: '€160,000', meta: [], art: asset('studios/split-the-g.png') },
+]
+
+export const PAYMENTS = ['Wallet', 'AdvCash', 'AstroPay', 'BBVA Bancomer', 'Banorte', 'Bitcoin', 'American Express', 'Mastercard', 'BBVA', 'Banco Azteca', 'Banorte', 'Boleto', 'Visa', 'USDT']
+export const TICKER = [
+  ['TON/USDT', '$1.6009'],
+  ['BTC/USDT', '$64,782.72'],
+  ['ETH/USDT', '$1,825.67'],
+  ['XRP/USDT', '$0.962000'],
+  ['LTC/USDT', '$91.40'],
+  ['SOL/USDT', '$142.11'],
+]
