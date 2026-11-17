@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { BETS, JACKPOT, type Game } from '../../data/demo'
-import { BENTO, CASINO_CHIPS, CASINO_PROMOS, CATALOGUE, CONTESTS, CRASH, DISCOVER, HUB_BANNERS, INOUT, JUST_ADDED, LIVE_CATALOGUE, LIVE_CHIPS, LIVE_RAIL, LOOTBOXES, LOTTERIES, MATCHES, PACK, PAYMENTS, PREDICTIONS, PREDICTION_CHIPS, PROMO_BANNER, PROMO_HERO, PROMO_ICONS, PVP, QUICK_LINKS, SPORTS, SPORT_PROMOS, SPORT_TABS, TICKER, TOURNAMENTS, TRENDING, type PageId, type PromoCard } from '../../data/pages'
+import { BENTO, CASINO_CHIPS, CASINO_PROMOS, CATALOGUE, CONTESTS, CRASH, DISCOVER, HUB_BANNERS, INOUT, JUST_ADDED, LIVE_CATALOGUE, LIVE_CHIPS, LIVE_RAIL, LOOTBOXES, LOTTERIES, MATCHES, PACK, PAYMENTS, PREDICTIONS, PREDICTION_CHIPS, PROMO_BANNER, PROMO_HERO, PROMO_ICONS, PVP, QUICK_LINKS, SPORTS, SPORT_PROMOS, SPORT_DISCLAIMER, SPORT_TABS, TICKER, TOURNAMENTS, TRENDING, UPCOMING, type Match, type PageId, type PromoCard } from '../../data/pages'
 import { asset } from '../../lib/assets'
 import { Icon, Svg } from './icons'
 import { Arrows, Chips, GameGrid, GameTile, PageTitleBar, SectionHead, Toggle, t, type Nav } from './chrome'
@@ -270,23 +270,66 @@ export function CategoryPage({ mobile, nav, live }: { mobile: boolean; nav: Nav;
 
 /* ------------------------------------------------------------------ /sports · /sports/predictions */
 
-function SportShell({ mobile, tab, children, nav }: { mobile: boolean; tab: number; children: ReactNode; nav: Nav }) {
-  const strip: ReactNode[] = [Icon.gift, Icon.star, Icon.streamer, Icon.ball, Icon.trophy, Icon.flag, Icon.dice, Icon.cards, Icon.ticket, Icon.providers, Icon.chat, Icon.menu]
+function SportShell({ mobile, tab, children, nav, sport, onSport }: { mobile: boolean; tab: number; children: ReactNode; nav: Nav; sport?: number; onSport?: (i: number) => void }) {
+  // Their strip: home · LIVE · favourites · betslip │ sports (active ringed) … search
+  const quick: ReactNode[] = [Icon.gift, Icon.live, Icon.star, Icon.cards]
+  const tabIcons: ReactNode[] = [Icon.live, Icon.gear, Icon.flag, Icon.ticket, Icon.slots]
+  const [open, setOpen] = useState(false)
   return (
     <>
-      <div className="vcard" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: 6, overflowX: 'auto' }}>
-        {strip.slice(0, mobile ? 5 : 12).map((d, i) => (
-          <button key={i} style={{ width: 38, height: 38, borderRadius: 10, display: 'grid', placeItems: 'center', color: i === 0 ? t('brand-brand-color-1-500') : t('brand-primary-1-400') }}>
-            <Svg d={d} size={19} stroke={1.9} />
+      <div className="vcard" style={{ display: 'flex', alignItems: 'center', gap: 2, padding: '6px 8px', overflowX: 'auto', borderRadius: 14 }} >
+        {quick.slice(0, mobile ? 4 : 4).map((d, i) => (
+          <button key={i} style={{ width: 36, height: 36, borderRadius: 10, display: 'grid', placeItems: 'center', color: t('brand-primary-1-500') }}>
+            {i === 1 ? <span className="vlabel" style={{ height: 18, padding: '0 5px', border: `1.5px solid ${t('brand-primary-1-400')}`, color: t('brand-primary-1-600'), fontSize: 8 }}>Live</span> : <Svg d={d} size={18} stroke={1.9} />}
           </button>
         ))}
+        <span style={{ width: 1, height: 22, background: t('brand-secondary-6'), margin: '0 8px', flex: '0 0 auto' }} />
+        {!mobile &&
+          SPORTS.map((sName, i) => {
+            const on = i === sport
+            return (
+              <button key={sName} onClick={() => onSport?.(i)} title={sName} style={{ width: 36, height: 36, borderRadius: '50%', display: 'grid', placeItems: 'center', background: on ? t('brand-brand-color-1-500') : 'transparent', color: on ? t('brand-button-deposit-text') : t('brand-primary-1-400'), flex: '0 0 auto' }}>
+                <Svg d={Icon.ball} size={18} stroke={on ? 2.2 : 1.8} />
+              </button>
+            )
+          })}
+        {mobile && (
+          <button style={{ width: 36, height: 36, borderRadius: '50%', display: 'grid', placeItems: 'center', background: t('brand-brand-color-1-500'), color: t('brand-button-deposit-text') }}>
+            <Svg d={Icon.ball} size={18} stroke={2.2} />
+          </button>
+        )}
         <span style={{ flex: 1 }} />
-        <button style={{ width: 38, height: 38, borderRadius: 10, display: 'grid', placeItems: 'center', color: t('brand-primary-1-600') }}>
+        <button style={{ width: 36, height: 36, borderRadius: 10, display: 'grid', placeItems: 'center', color: t('brand-primary-1-600') }}>
           <Svg d={Icon.search} size={19} stroke={2} />
         </button>
       </div>
-      <Chips items={SPORT_TABS} active={tab} mobile={mobile} onChange={(i) => nav.go(i === 2 ? 'predictions' : i === 3 ? 'lotteries' : 'sport')} />
+      <div className="no-scrollbar" style={{ display: 'flex', gap: 8, overflowX: 'auto', margin: mobile ? '0 -16px' : 0, padding: mobile ? '0 16px' : 0 }}>
+        {SPORT_TABS.map((l, i) => (
+          <button key={l} onClick={() => nav.go(i === 2 ? 'predictions' : i === 3 ? 'lotteries' : 'sport')} className={`vtab${i === tab ? ' vtab-on' : ''}`} style={{ height: 38 }}>
+            <Svg d={tabIcons[i]} size={14} stroke={2} />
+            {l}
+          </button>
+        ))}
+      </div>
       {children}
+      <div style={{ display: 'grid', gap: 10, justifyItems: 'end', paddingTop: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative' }}>
+          <span className="vfaint" style={{ fontSize: t('typography-size-sm'), letterSpacing: '.2em', textTransform: 'uppercase', fontWeight: 700 }}>Odds format</span>
+          <button onClick={() => setOpen((o) => !o)} className="vinput" style={{ height: 36, width: 160, justifyContent: 'space-between', color: t('brand-primary-1-600'), fontWeight: 600 }}>
+            European <Svg d={Icon.chevronDown} size={14} stroke={2} />
+          </button>
+          {open && (
+            <div className="vcard" style={{ position: 'absolute', right: 0, top: 'calc(100% + 6px)', zIndex: 5, width: 160, padding: 6, background: t('brand-secondary-1') }}>
+              {['European', 'Fractional', 'American'].map((o, i) => (
+                <button key={o} onClick={() => setOpen(false)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 10px', borderRadius: 8, fontSize: t('typography-size-md'), fontWeight: 600, color: i === 0 ? t('brand-brand-color-1-500') : t('brand-primary-1-500') }}>
+                  {o}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <p className="vfaint" style={{ margin: 0, fontSize: t('typography-size-sm'), lineHeight: 1.45, textAlign: 'right', maxWidth: 720 }}>{SPORT_DISCLAIMER}</p>
+      </div>
       <div style={{ position: 'sticky', bottom: mobile ? 84 : 16, display: 'flex', justifyContent: mobile ? 'center' : 'flex-end', pointerEvents: 'none' }}>
         <div role="button" className="vbtn vbtn-primary" style={{ pointerEvents: 'auto', height: 48, borderRadius: 999, padding: '0 10px 0 16px', gap: 12, boxShadow: t('brand-shadow-1'), cursor: 'pointer' }}>
           <Svg d={Icon.cards} size={18} stroke={2} />
@@ -299,55 +342,81 @@ function SportShell({ mobile, tab, children, nav }: { mobile: boolean; tab: numb
   )
 }
 
-export function SportPage({ mobile, nav }: { mobile: boolean; nav: Nav }) {
-  const [sport, setSport] = useState(0)
+/** Their match card: competition line · status · two team rows with crest + score · "1x2" odds, or "Go to All Markets" when not open. */
+function MatchCard({ m, upcoming }: { m: Match; upcoming?: boolean }) {
+  const openMarkets = m.odds[0] !== '—' || upcoming
+  const suspended = /ended|suspended/i.test(m.status)
   return (
-    <SportShell mobile={mobile} tab={0} nav={nav}>
+    <div className="vcard" style={{ padding: 14, display: 'grid', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+        <span className="vfaint" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: t('typography-size-sm'), fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <Svg d={Icon.ball} size={13} stroke={2} />
+          {m.comp}
+        </span>
+        {m.live && <Svg d={Icon.live} size={14} stroke={2} color={t('brand-error-500')} />}
+      </div>
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: t('typography-size-md'), fontWeight: 700, color: suspended ? t('brand-primary-1-300') : m.live ? t('brand-info-500') : t('brand-primary-1-400') }}>
+        {m.status}
+        {m.live && !suspended && <span style={{ width: 0, height: 0, borderLeft: `7px solid ${t('brand-error-500')}`, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', display: 'inline-block' }} />}
+      </div>
+      {[
+        [m.home, m.hs],
+        [m.away, m.as],
+      ].map(([n, sc]) => (
+        <div key={String(n)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+          <span className="vc" style={{ fontSize: t('typography-size-lg'), display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ width: 22, height: 22, borderRadius: '50%', background: t('brand-secondary-2'), display: 'grid', placeItems: 'center', color: t('brand-primary-1-300') }}>
+              <Svg d={Icon.ball} size={12} stroke={2} />
+            </span>
+            {n}
+          </span>
+          {!upcoming && <span className="vc" style={{ minWidth: 26, height: 26, borderRadius: 7, display: 'grid', placeItems: 'center', background: t('brand-secondary-2'), fontSize: t('typography-size-md') }}>{sc}</span>}
+        </div>
+      ))}
+      {openMarkets && !suspended ? (
+        <>
+          <span className="vfaint" style={{ fontSize: t('typography-size-sm') }}>1x2</span>
+          <OddsRow odds={m.odds} labels={['1', 'draw', '2']} />
+        </>
+      ) : (
+        <button className="vbtn vbtn-soft" style={{ width: '100%', marginTop: 6 }}>
+          Go to All Markets
+        </button>
+      )}
+    </div>
+  )
+}
+
+export function SportPage({ mobile, nav, upcoming }: { mobile: boolean; nav: Nav; upcoming?: boolean }) {
+  const [sport, setSport] = useState(0)
+  const [tab, setTab] = useState(upcoming ? 1 : 0)
+  const list = tab === 1 ? UPCOMING : MATCHES
+  return (
+    <SportShell mobile={mobile} tab={tab} nav={{ ...nav, go: (p) => (p === 'sport' ? setTab((v) => (v === 0 ? 1 : 0)) : nav.go(p)) }} sport={sport} onSport={setSport}>
       {mobile ? (
         <div className="no-scrollbar" style={{ display: 'flex', gap: 14, overflowX: 'auto', margin: '0 -16px', padding: '0 16px' }}>
-          {SPORTS.slice(0, 8).map((s, i) => (
-            <button key={s} onClick={() => setSport(i)} style={{ display: 'grid', gap: 6, justifyItems: 'center', flex: '0 0 64px' }}>
+          {SPORTS.slice(0, 8).map((sName, i) => (
+            <button key={sName} onClick={() => setSport(i)} style={{ display: 'grid', gap: 6, justifyItems: 'center', flex: '0 0 64px' }}>
               <span style={{ width: 54, height: 54, borderRadius: 14, display: 'grid', placeItems: 'center', background: i === sport ? t('brand-brand-color-1-500') : t('brand-secondary-5'), color: i === sport ? t('brand-button-deposit-text') : t('brand-primary-1-500') }}>
                 <Svg d={Icon.ball} size={22} stroke={2} />
               </span>
-              <span style={{ fontSize: t('typography-size-sm'), fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 64 }}>{s}</span>
+              <span style={{ fontSize: t('typography-size-sm'), fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 64 }}>{sName}</span>
             </button>
           ))}
         </div>
       ) : (
-        <Chips items={SPORTS} active={sport} mobile={false} onChange={setSport} />
+        <div className="no-scrollbar" style={{ display: 'flex', gap: 8, overflowX: 'auto' }}>
+          {SPORTS.map((sName, i) => (
+            <button key={sName} onClick={() => setSport(i)} className={`vtab${i === sport ? ' vtab-on' : ''}`}>
+              <Svg d={Icon.ball} size={14} stroke={2} />
+              {sName}
+            </button>
+          ))}
+        </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
-        {MATCHES.map((m) => (
-          <div key={m.comp + m.home} className="vcard" style={{ padding: 14, display: 'grid', gap: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <span className="vfaint" style={{ fontSize: t('typography-size-sm'), fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.comp}</span>
-              {m.live && <Svg d={Icon.live} size={14} stroke={2} color={t('brand-error-500')} />}
-            </div>
-            <div style={{ fontSize: t('typography-size-md'), fontWeight: 700, color: m.live ? t('brand-info-500') : t('brand-primary-1-300') }}>{m.status}</div>
-            {[
-              [m.home, m.hs],
-              [m.away, m.as],
-            ].map(([n, s]) => (
-              <div key={String(n)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                <span className="vc" style={{ fontSize: t('typography-size-lg'), display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 20, height: 20, borderRadius: '50%', background: t('brand-secondary-2'), display: 'inline-block' }} />
-                  {n}
-                </span>
-                <span className="vc" style={{ minWidth: 26, height: 26, borderRadius: 7, display: 'grid', placeItems: 'center', background: t('brand-secondary-2'), fontSize: t('typography-size-md') }}>{s}</span>
-              </div>
-            ))}
-            {m.live ? (
-              <>
-                <span className="vfaint" style={{ fontSize: t('typography-size-sm') }}>1x2</span>
-                <OddsRow odds={m.odds} labels={['1', 'draw', '2']} />
-              </>
-            ) : (
-              <button className="vbtn vbtn-soft" style={{ width: '100%' }}>
-                Go to All Markets
-              </button>
-            )}
-          </div>
+        {list.map((m) => (
+          <MatchCard key={m.comp + m.home} m={m} upcoming={tab === 1} />
         ))}
       </div>
     </SportShell>

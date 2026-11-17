@@ -247,3 +247,16 @@ export const TICKER = [
   ['LTC/USDT', '$91.40'],
   ['SOL/USDT', '$142.11'],
 ]
+
+/* ------------------------------------------------------------------ sport — upcoming + footer */
+
+export const UPCOMING: Match[] = [
+  { comp: 'Soccer · Premier League', status: 'Today 19:30', live: false, home: 'Everton', away: 'Brentford', hs: 0, as: 0, odds: ['2.30', '3.30', '3.10'] },
+  { comp: 'Basketball · NBA', status: 'Today 23:00', live: false, home: 'Minnesota', away: 'Portland', hs: 0, as: 0, odds: ['1.52', '—', '2.55'] },
+  { comp: 'Ice Hockey · NHL', status: 'Tomorrow 11:00', live: false, home: 'Los Angeles', away: 'Colorado', hs: 0, as: 0, odds: ['2.45', '3.90', '2.10'] },
+  { comp: 'Tennis · ATP Paris', status: 'Tomorrow 14:00', live: false, home: 'T. Fritz', away: 'C. Alcaraz', hs: 0, as: 0, odds: ['3.40', '—', '1.32'] },
+  { comp: 'Counter-Strike · BLAST Premier', status: 'Sat 18:00', live: false, home: 'Vitality', away: 'NAVI', hs: 0, as: 0, odds: ['1.70', '—', '2.10'] },
+  { comp: 'MMA · UFC Fight Night', status: 'Sun 09:00', live: false, home: 'A. Volkanovski', away: 'I. Topuria', hs: 0, as: 0, odds: ['2.05', '—', '1.78'] },
+]
+export const SPORT_DISCLAIMER =
+  'Although every effort is made to ensure data displayed on our site is accurate, this data is for information purposes and should be used as a guide only. In the event of any discrepancy, the odds and markets confirmed in your bet slip apply.'
