@@ -175,6 +175,7 @@ export function buildTokens(p: Palette): Tokens {
 
 const GREEN: Ramp = { 100: '#b3ffb3', 300: '#66ff66', 400: '#33ff33', 500: '#00ff00', 600: '#009b00' }
 const MAGENTA: Ramp = { 100: '#f6c9ff', 300: '#ee8dff', 400: '#e75cff', 500: '#e128ff', 600: '#a81bbf' }
+// Green is the WTF primary in every direction; magenta/gold/cyan only ever support it.
 const CYAN: Ramp = { 100: '#c9f1ff', 300: '#6fdbff', 400: '#05c5ff', 500: '#049ccb', 600: '#037396' }
 const GOLD: Ramp = { 100: '#fff0b3', 300: '#ffd666', 400: '#ffc933', 500: '#ffb800', 600: '#b88400' }
 const MINT: Ramp = { 100: '#c9fff1', 300: '#6fffd8', 400: '#1ef0b6', 500: '#12b88a', 600: '#0c7f60' }
@@ -233,7 +234,7 @@ export const PALETTES: Palette[] = [
   {
     id: 3,
     label: 'V3 · Carbon',
-    desc: 'Graphite surfaces · magenta CTA · green for wins · soft 12px radii',
+    desc: 'Graphite surfaces · green CTA · magenta support · soft 12px radii',
     bg: '#0a0a0c',
     surface: '#111114',
     surface2: '#131317',
@@ -245,8 +246,8 @@ export const PALETTES: Palette[] = [
     textMuted: '#a0a0aa',
     textFaint: '#72727c',
     textFainter: '#52525a',
-    a1: MAGENTA,
-    a2: GREEN,
+    a1: GREEN,
+    a2: MAGENTA,
     a3: CYAN,
     buttonText: '#000000',
     success: '#00ff00',

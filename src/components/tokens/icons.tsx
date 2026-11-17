@@ -51,6 +51,19 @@ export const Icon = {
     </>
   ),
   chevron: <path d="M9 6l6 6-6 6" />,
+  chevronDown: <path d="M6 9l6 6 6-6" />,
+  chevronLeft: <path d="M15 6l-6 6 6 6" />,
+  tag: <path d="M20 12l-8 8-9-9V4h7zM7.5 7.5h.01" />,
+  flag: <path d="M5 21V4h11l-1.5 4L16 12H5" />,
+  ticket: <path d="M3 9a2 2 0 0 0 2-2V5h14v2a2 2 0 0 0 0 4v2a2 2 0 0 0 0 4v2H5v-2a2 2 0 0 0-2-2zM13 5v14" />,
+  chat: <path d="M4 5h16v11H9l-5 4z" />,
+  cards: (
+    <>
+      <rect x="3" y="6" width="11" height="14" rx="2" />
+      <path d="M8 4h11a2 2 0 0 1 2 2v12" />
+    </>
+  ),
+  share: <path d="M15 4h5v5M20 4l-9 9M19 14v5H5V5h5" />,
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
   instagram: (
     <>

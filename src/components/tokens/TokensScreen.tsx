@@ -7,7 +7,8 @@ import { Icon, Svg } from './icons'
 /**
  * demo.vegangster.com, module for module, restyled ONLY through Vegangster's
  * token names. Same page on desktop and mobile (their layout is a single
- * centred column with a floating glass header and bottom nav on both).
+ * centred column; desktop adds their 340px side menu and product tabs in the
+ * header, mobile keeps the floating bottom nav).
  */
 
 const K_FOR: Record<number, number> = { 1440: 1, 2560: 1.5, 3440: 1.65 }
@@ -39,10 +40,33 @@ function Toggle({ on }: { on?: boolean }) {
 
 /* ------------------------------------------------------------------ header + nav */
 
+const PRODUCT_TABS: [string, ReactNode][] = [
+  ['Casino', Icon.dice],
+  ['Live Casino', Icon.live],
+  ['Sport', Icon.ball],
+  ['Originals', Icon.slots],
+  ['WTF Studios', Icon.star],
+  ['WTF Live', Icon.streamer],
+]
+
 function Header({ mobile }: { mobile: boolean }) {
   return (
-    <div className="vglass" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 6, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: mobile ? '0 12px' : '0 24px', borderWidth: '0 0 1px' }}>
-      <img src={LOGO} alt="WTF Games" style={{ height: mobile ? 26 : 30, display: 'block' }} />
+    <div className="vglass" style={{ position: 'absolute', top: 0, left: mobile ? 0 : 340, right: 0, zIndex: 6, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: mobile ? '0 12px' : '0 24px 0 0', borderWidth: '0 0 1px' }}>
+      {mobile ? (
+        <img src={LOGO} alt="WTF Games" style={{ height: 26, display: 'block' }} />
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2, height: 40, padding: '0 6px', borderRadius: 999, background: t('brand-secondary-24'), border: `1px solid ${t('brand-secondary-6')}` }}>
+          {PRODUCT_TABS.map(([l, d], i) => {
+            const on = i === 0
+            return (
+              <button key={l} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, height: 30, padding: '0 12px', borderRadius: 999, background: on ? t('brand-brand-color-1-500') : 'transparent', color: on ? t('brand-button-deposit-text') : t('brand-primary-1-500'), fontSize: t('typography-size-md'), fontWeight: 600, whiteSpace: 'nowrap' }}>
+                <Svg d={d} size={14} stroke={2} />
+                {l}
+              </button>
+            )
+          })}
+        </div>
+      )}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <button aria-label="Settings" style={{ width: 36, height: 36, borderRadius: '50%', display: 'grid', placeItems: 'center', background: t('brand-secondary-24'), color: t('brand-primary-1-600') }}>
           <Svg d={Icon.gear} size={17} stroke={2} />
@@ -53,8 +77,69 @@ function Header({ mobile }: { mobile: boolean }) {
         <button className="vbtn vbtn-primary vbtn-sm" style={{ height: 36 }}>
           Sign Up
         </button>
+        {!mobile && (
+          <button aria-label="Share" style={{ width: 36, height: 36, borderRadius: '50%', display: 'grid', placeItems: 'center', background: t('brand-secondary-24'), color: t('brand-primary-1-600') }}>
+            <Svg d={Icon.share} size={16} stroke={2} />
+          </button>
+        )}
       </div>
     </div>
+  )
+}
+
+/** Their desktop side menu (ui-side-menu-v3): logo bar, accordion groups, a glass block of promos, chat + language. */
+function SideMenu() {
+  const groups: [string, ReactNode, boolean][] = [
+    ['Casino', Icon.dice, true],
+    ['Live Casino', Icon.live, true],
+    ['Sport', Icon.ball, false],
+    ['Originals', Icon.slots, true],
+    ['WTF Studios', Icon.star, true],
+  ]
+  const promos: [string, ReactNode][] = [
+    ['Bonuses', Icon.gift],
+    ['Promotions', Icon.tag],
+    ['Tournaments', Icon.trophy],
+    ['Contests', Icon.flag],
+    ['Lotteries', Icon.ticket],
+  ]
+  const card: CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, height: 46, padding: '0 14px', borderRadius: 12, background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}`, color: t('brand-primary-1-600'), fontSize: t('typography-size-lg'), fontWeight: 600, textAlign: 'left', width: '100%' }
+  const row: CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, height: 40, padding: '0 14px', color: t('brand-primary-1-500'), fontSize: t('typography-size-lg'), fontWeight: 600, textAlign: 'left', width: '100%' }
+  return (
+    <aside className="no-scrollbar" style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 340, zIndex: 7, padding: '12px 20px 24px 24px', overflowY: 'auto', display: 'grid', alignContent: 'start', gap: 10 }}>
+      <div style={{ ...card, height: 50, justifyContent: 'flex-start', gap: 16, marginBottom: 6 }}>
+        <Svg d={Icon.menu} size={20} stroke={2} />
+        <img src={LOGO} alt="WTF Games" style={{ height: 28, display: 'block' }} />
+      </div>
+      {groups.map(([l, d, acc], i) => (
+        <button key={l} style={{ ...card, color: i === 0 ? t('brand-brand-color-1-500') : t('brand-primary-1-600'), borderColor: i === 0 ? t('brand-glass-effect-stroke') : t('brand-secondary-6') }}>
+          <Svg d={d} size={18} stroke={2} />
+          <span style={{ flex: 1 }}>{l}</span>
+          {acc && <Svg d={Icon.chevronDown} size={16} stroke={2} color={t('brand-primary-1-300')} />}
+        </button>
+      ))}
+      <div className="vglass" style={{ borderRadius: 14, padding: 6, marginTop: 6 }}>
+        {promos.map(([l, d]) => (
+          <button key={l} style={row}>
+            <Svg d={d} size={17} stroke={2} />
+            {l}
+          </button>
+        ))}
+      </div>
+      <div className="vglass" style={{ borderRadius: 14, padding: 6 }}>
+        <button style={row}>
+          <Svg d={Icon.chat} size={17} stroke={2} />
+          Social Chat
+        </button>
+        <button style={row}>
+          <Svg d={Icon.ball} size={17} stroke={2} />
+          <span style={{ flex: 1 }}>Language</span>
+          <span className="vfaint" style={{ fontSize: t('typography-size-md'), display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            English <Svg d={Icon.chevronDown} size={14} stroke={2} />
+          </span>
+        </button>
+      </div>
+    </aside>
   )
 }
 
@@ -173,7 +258,21 @@ function GameTile({ game }: { game: Game }) {
 function TopGames({ mobile }: { mobile: boolean }) {
   return (
     <section>
-      <SectionHead title="Top" icon={<Svg d={Icon.dice} size={18} stroke={2} />} />
+      <SectionHead
+        title="Top"
+        icon={<Svg d={Icon.dice} size={18} stroke={2} />}
+        right={
+          !mobile && (
+            <div style={{ display: 'flex', gap: 6 }}>
+              {[Icon.chevronLeft, Icon.chevron].map((d, i) => (
+                <button key={i} style={{ width: 30, height: 30, borderRadius: 8, display: 'grid', placeItems: 'center', background: t('brand-secondary-5'), border: `1px solid ${t('brand-secondary-6')}`, color: t('brand-primary-1-500') }}>
+                  <Svg d={d} size={15} stroke={2.2} />
+                </button>
+              ))}
+            </div>
+          )
+        }
+      />
       {mobile ? (
         <div className="no-scrollbar" style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, auto)', gridAutoColumns: 'calc((100% - 12px) / 2.25)', gap: 12, overflowX: 'auto', margin: '0 -16px', padding: '0 16px' }}>
           {STUDIO_GAMES.map((g) => (
@@ -311,7 +410,7 @@ function BetsFeed({ mobile }: { mobile: boolean }) {
 
 function SeoFooter({ mobile }: { mobile: boolean }) {
   return (
-    <footer style={{ display: 'grid', gap: 18, paddingBottom: 90 }}>
+    <footer style={{ display: 'grid', gap: 18, paddingBottom: mobile ? 90 : 40 }}>
       <div className="vcard" style={{ padding: mobile ? 16 : 20, display: 'grid', gap: 8 }}>
         <div className="vc" style={{ fontSize: t('typography-size-lg-plus') }}>{FOOTER.title}</div>
         <p className="vmuted" style={{ margin: 0, fontSize: t('typography-size-md'), lineHeight: 1.45 }}>{FOOTER.copy}</p>
@@ -348,7 +447,7 @@ function SeoFooter({ mobile }: { mobile: boolean }) {
 function Page({ mobile }: { mobile: boolean }) {
   return (
     // minmax(0, 1fr) keeps the horizontal rails from widening the column past the viewport.
-    <div style={{ maxWidth: 1240, margin: '0 auto', padding: mobile ? '0 16px' : '0 24px', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: mobile ? 26 : 34 }}>
+    <div style={{ maxWidth: 1240, margin: '0 auto', padding: mobile ? '0 16px 0' : '0 24px 0 4px', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: mobile ? 26 : 34 }}>
       <Hero mobile={mobile} />
       <Jackpot mobile={mobile} />
       <TopGames mobile={mobile} />
@@ -390,11 +489,11 @@ export function TokensScreen({ tokens, isDesktop, width, bodyHeight }: Props) {
       <WindowChrome />
       {/* zoom scales type, CTAs and spacing together at the big breakpoints */}
       <div style={{ position: 'relative', height: bodyHeight / kk, width: width / kk, zoom: kk } as CSSProperties}>
+        <SideMenu />
         <Header mobile={false} />
-        <div className="no-scrollbar" style={{ height: '100%', overflowY: 'auto' }}>
+        <div className="no-scrollbar" style={{ height: '100%', overflowY: 'auto', paddingLeft: 340 }}>
           <Page mobile={false} />
         </div>
-        <NavPill />
       </div>
     </div>
   )
