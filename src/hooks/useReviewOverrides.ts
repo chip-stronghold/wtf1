@@ -1,4 +1,5 @@
 import { REVIEW_AREAS, SHIPPED_HERO, SHOW_CONTROLS, type HeroConcept, type ProfileVersion, type ReviewScreen } from '../config'
+import type { SkinId } from '../data/skins'
 
 /**
  * Review-only overrides read once from the URL query string. Lets a reviewer
@@ -6,7 +7,8 @@ import { REVIEW_AREAS, SHIPPED_HERO, SHOW_CONTROLS, type HeroConcept, type Profi
  * shipping the design-handoff switcher in the UI.
  *
  *   ?hero=1..2   preview a specific hero concept
- *   ?area=lobby|auth|profile|wallet|promotions   which review area to open
+ *   ?area=tokens|lobby|auth|profile|wallet|promotions   which review area to open (default tokens)
+ *   ?skin=1..3   skin-token direction · ?sheet=1 show the token sheet · ?logged=1 logged-in header
  *   ?profile=1..7   account page concept (5–7 are the earlier set)
  *   ?pnl=up|down    show the account P&L module in profit or loss
  *   ?live=1      force the LIVE show state
@@ -21,6 +23,9 @@ export interface ReviewOverrides {
   area: ReviewScreen
   profile: ProfileVersion
   pnlUp: boolean
+  skin: SkinId
+  sheet: boolean
+  loggedIn: boolean
   casino: {
     concept: 1 | 2 | 3
     visit: 'first' | 'returning'
@@ -55,7 +60,7 @@ export function getReviewOverrides(): ReviewOverrides {
         : SHOW_CONTROLS
 
   const areaParam = params.get('area')
-  const area: ReviewScreen = REVIEW_AREAS.some((a) => a.id === areaParam) ? (areaParam as ReviewScreen) : 'lobby'
+  const area: ReviewScreen = REVIEW_AREAS.some((a) => a.id === areaParam) ? (areaParam as ReviewScreen) : 'tokens'
 
   const profileParam = Number(params.get('profile'))
   const profile: ProfileVersion = profileParam >= 1 && profileParam <= 7 ? (profileParam as ProfileVersion) : 1
@@ -75,5 +80,10 @@ export function getReviewOverrides(): ReviewOverrides {
     day: params.get('day') === '1' ? 1 : 0,
   }
 
-  return { hero, forceLive, forceView, controls, area, profile, pnlUp, casino }
+  const skinParam = Number(params.get('skin'))
+  const skin: SkinId = skinParam >= 1 && skinParam <= 3 ? (skinParam as SkinId) : 1
+  const sheet = on('sheet')
+  const loggedIn = on('logged')
+
+  return { hero, forceLive, forceView, controls, area, profile, pnlUp, skin, sheet, loggedIn, casino }
 }

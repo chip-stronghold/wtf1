@@ -16,7 +16,7 @@ export type WalletVersion = 1 | 2 | 3
 /** Promotions / offers page concepts (review switcher). */
 export type PromotionsVersion = 1 | 2 | 3 | 4 | 5
 /** Which review screen the harness is showing. */
-export type ReviewScreen = 'lobby' | 'auth' | 'profile' | 'wallet' | 'promotions' | 'casino'
+export type ReviewScreen = 'tokens' | 'lobby' | 'auth' | 'profile' | 'wallet' | 'promotions' | 'casino'
 
 /**
  * Areas of the site available in the review harness. The control-bar dropdown
@@ -24,6 +24,7 @@ export type ReviewScreen = 'lobby' | 'auth' | 'profile' | 'wallet' | 'promotions
  * iterating on another part of the product.
  */
 export const REVIEW_AREAS: { id: ReviewScreen; label: string; desc: string }[] = [
+  { id: 'tokens', label: 'Skin tokens', desc: 'Vegangster token skins — 3 directions + token sheet' },
   { id: 'casino', label: 'Casino lobby', desc: 'Brief concepts — 3 directions, no hero video' },
   { id: 'lobby', label: 'Lobby', desc: 'Casino lobby + WTF Live hero' },
   { id: 'auth', label: 'Login / Sign-up', desc: 'Login & sign-up modal' },

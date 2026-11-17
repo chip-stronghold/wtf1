@@ -1,4 +1,25 @@
-# WTF Games — casino lobby prototype
+# WTF1 — design sandbox (forked from the WTF Games prototype)
+
+**Purpose:** a public place to iterate on tokens, colours and skins for the next casino
+frontend (Vegangster is the platform under evaluation — see `design-handoff/vegangster/`).
+Live at https://wtf1-nine.vercel.app. The original review areas are carried across unchanged.
+
+## Skin tokens area (`?area=tokens`, the default here)
+
+- `src/data/skins.ts` — three skin directions authored as small palettes; `buildTokens`
+  expands each to Vegangster's full token set (`--token-brand-*` etc). `skinToCss` emits the
+  `:root { … }` block their theme file uses (the **Copy CSS** button in the control bar).
+- `src/components/tokens/TokensScreen.tsx` — a Vegangster-shaped frontend styled only through
+  those tokens (no hard-coded colours). Game art is placeholder gradients.
+- `src/components/tokens/TokenSheet.tsx` — every token of the active skin, grouped, click to copy.
+- URL: `?area=tokens&skin=1..3&view=mobile|desktop&sheet=1&logged=1&controls=0`.
+- Fonts stay on Vegangster's default stack: **Korolev is ruled out for this platform**
+  (Adobe-licensed). Green-filled buttons always carry **black** text.
+- `SKIN_PICK` in `skins.ts` marks AJ's chosen direction (PICK badge). null until chosen.
+
+---
+
+# WTF Games — casino lobby prototype (carried across)
 
 A **design review prototype**, not a production app. One Vite + React +
 TypeScript app covering several areas of the wtfgames.com product, with a

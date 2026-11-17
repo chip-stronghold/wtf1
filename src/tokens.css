@@ -1,0 +1,159 @@
+/* ============================================================
+   Skin tokens area — a Vegangster-shaped frontend styled ONLY through
+   Vegangster's token names. The active skin is applied as inline custom
+   properties on `.veg`, so swapping the skin restyles everything.
+   ============================================================ */
+.veg {
+  font-family: var(--token-font-ui-family);
+  font-weight: var(--token-font-ui-weight);
+  color: var(--token-brand-primary-1-600);
+  background: var(--token-brand-secondary-4);
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--token-typography-size-lg);
+  line-height: 1.3;
+}
+.veg *,
+.veg *::before,
+.veg *::after {
+  box-sizing: border-box;
+}
+.veg button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.veg input {
+  font: inherit;
+  color: inherit;
+}
+/* Their "banner" / "card" font slots → headline + card title classes. */
+.veg .vh {
+  font-family: var(--token-font-banner-family);
+  font-weight: var(--token-font-banner-weight);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+.veg .vc {
+  font-family: var(--token-font-card-family);
+  font-weight: var(--token-font-card-weight);
+}
+.veg .vcard {
+  background: var(--token-brand-secondary-5);
+  border: 1px solid var(--token-brand-secondary-6);
+  border-radius: 16px;
+}
+.veg .vbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--token-border-radius-button);
+  font-weight: 700;
+  font-size: var(--token-typography-size-lg);
+  white-space: nowrap;
+  transition:
+    background 0.12s,
+    transform 0.12s;
+}
+.veg .vbtn:active {
+  transform: scale(0.98);
+}
+.veg .vbtn-primary {
+  background: var(--token-brand-button-deposit-normal);
+  color: var(--token-brand-button-deposit-text);
+}
+.veg .vbtn-primary:hover {
+  background: var(--token-brand-button-deposit-hover);
+}
+.veg .vbtn-ghost {
+  background: transparent;
+  color: var(--token-brand-brand-color-1-500);
+  box-shadow: inset 0 0 0 1.5px var(--token-brand-brand-color-1-500);
+}
+.veg .vbtn-ghost:hover {
+  background: var(--token-brand-glass-effect-brand);
+}
+.veg .vbtn-soft {
+  background: var(--token-brand-secondary-2);
+  color: var(--token-brand-primary-1-600);
+}
+.veg .vbtn-sm {
+  height: 32px;
+  padding: 0 13px;
+  font-size: var(--token-typography-size-md);
+}
+.veg .vtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--token-border-radius-tabs-category-tab-v2);
+  background: var(--token-brand-secondary-5);
+  border: 1px solid var(--token-brand-secondary-6);
+  color: var(--token-brand-primary-1-400);
+  font-size: var(--token-typography-size-md);
+  font-weight: 700;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.veg .vtab-on {
+  background: var(--token-brand-brand-color-1-500);
+  border-color: transparent;
+  color: var(--token-brand-button-deposit-text);
+}
+.veg .vinput {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: var(--token-border-radius-input);
+  background: var(--token-brand-secondary-15);
+  border: 1px solid var(--token-brand-secondary-6);
+  color: var(--token-brand-primary-1-300);
+  font-size: var(--token-typography-size-lg);
+}
+.veg .vinput-focus {
+  border-color: var(--token-brand-brand-color-1-500);
+  box-shadow: 0 0 0 3px var(--token-brand-glass-effect-brand);
+  color: var(--token-brand-primary-1-600);
+}
+.veg .vlabel {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--token-border-radius-label);
+  font-size: var(--token-typography-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.veg .vglass {
+  background: var(--token-brand-glass-effect-general);
+  border: 1px solid var(--token-brand-glass-effect-stroke);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.veg .vmuted {
+  color: var(--token-brand-primary-1-300);
+}
+.veg .vfaint {
+  color: var(--token-brand-primary-1-200);
+}
+.veg .vsuccess {
+  color: var(--token-brand-success-500);
+}
+.veg .no-scrollbar {
+  scrollbar-width: none;
+}
+.veg .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

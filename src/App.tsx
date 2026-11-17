@@ -18,6 +18,10 @@ import { TopUpModal } from './components/wallet/TopUpModal'
 import { ScaledFrame } from './components/ScaledFrame'
 import { CasinoControlBar } from './components/casino/CasinoControlBar'
 import { CasinoScreen, useCasinoState } from './components/casino/CasinoPage'
+import { TokensControlBar } from './components/tokens/TokensControlBar'
+import { TokensScreen } from './components/tokens/TokensScreen'
+import { TokenSheet } from './components/tokens/TokenSheet'
+import { SKINS, type SkinId } from './data/skins'
 
 /** Desktop breakpoint preview widths (review only) and their window body heights. */
 export type DesktopWidth = 1440 | 2560 | 3440
@@ -69,6 +73,9 @@ export default function App() {
   // Desktop breakpoint preview width (review only).
   const [desktopWidth, setDesktopWidth] = useState<DesktopWidth>(1440)
   const casino = useCasinoState(overrides.casino)
+  const [skin, setSkin] = useState<SkinId>(overrides.skin)
+  const [sheet, setSheet] = useState(overrides.sheet)
+  const [tokensLoggedIn, setTokensLoggedIn] = useState(overrides.loggedIn)
 
   const isDesktop = viewOverride ? viewOverride === 'desktop' : matchesDesktop
   const live = liveOverride !== null ? liveOverride : clock.live
@@ -77,6 +84,28 @@ export default function App() {
   // Review mode: the handoff's centered canvas — control bar above a framed device
   // (browser window for desktop, phone bezel for mobile). Disable via SHOW_CONTROLS.
   if (overrides.controls) {
+    // Skin-token directions for the Vegangster frontend — a token-only component kit.
+    if (screen === 'tokens') {
+      const tokens = SKINS[skin].tokens
+      return (
+        <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 16px 64px', gap: 22 }}>
+          <TokensControlBar screen={screen} onScreen={setScreen} skin={skin} onSkin={setSkin} sheet={sheet} onSheet={setSheet} loggedIn={tokensLoggedIn} onLoggedIn={setTokensLoggedIn} isDesktop={isDesktop} onView={setViewOverride} desktopWidth={desktopWidth} onDesktopWidth={setDesktopWidth} />
+          <div style={{ display: 'flex', gap: 22, alignItems: 'flex-start', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
+            {isDesktop ? (
+              <ScaledFrame naturalWidth={desktopWidth} naturalHeight={40 + BODY_H[desktopWidth]}>
+                <TokensScreen tokens={tokens} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} loggedIn={tokensLoggedIn} />
+              </ScaledFrame>
+            ) : (
+              <PhoneFrame>
+                <TokensScreen tokens={tokens} isDesktop={false} width={390} bodyHeight={740} />
+              </PhoneFrame>
+            )}
+            {sheet && <TokenSheet skin={skin} />}
+          </div>
+        </div>
+      )
+    }
+
     // Casino lobby concepts from the brief — their own shells (no hero video).
     if (screen === 'casino') {
       return (
@@ -279,6 +308,22 @@ export default function App() {
   }
 
   // Production: clean full-bleed responsive app.
+  if (screen === 'tokens') {
+    const tokens = SKINS[skin].tokens
+    return (
+      <div style={{ height: '100dvh', background: 'var(--c-black)', display: 'flex', justifyContent: 'center' }}>
+        {isDesktop ? (
+          <ScaledFrame naturalWidth={desktopWidth} naturalHeight={40 + BODY_H[desktopWidth]}>
+            <TokensScreen tokens={tokens} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} loggedIn={tokensLoggedIn} />
+          </ScaledFrame>
+        ) : (
+          <div style={{ width: '100%', height: '100%' }}>
+            <TokensScreen tokens={tokens} isDesktop={false} width={390} bodyHeight={740} />
+          </div>
+        )}
+      </div>
+    )
+  }
   if (screen === 'casino') {
     return (
       <div style={{ height: '100dvh', background: 'var(--c-black)', display: 'flex', justifyContent: 'center' }}>
