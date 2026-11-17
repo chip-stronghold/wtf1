@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+._*
+
+# Node / Vite
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+*.log

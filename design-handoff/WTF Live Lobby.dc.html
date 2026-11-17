@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#08080a}
+  [data-noscroll]{scrollbar-width:none;-ms-overflow-style:none}
+  [data-noscroll]::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(130% 90% at 50% 0%,#16161d 0%,#08080a 60%);font-family:'Barlow',Helvetica,Arial,sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;padding:28px 16px 64px;gap:22px">
+
+  <!-- ░░ CONTROL BAR ░░ -->
+  <div style="width:100%;max-width:820px;background:#0e0e12;border:1px solid #23232a;border-radius:16px;padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,.4)">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.01em;line-height:1">WTF Live — Hero Concepts</div>
+        <div style="font-size:12px;color:#A5A5A5;margin-top:4px">Flip the top-of-lobby treatment · toggle device &amp; show state</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;gap:6px;background:#000;border:1px solid #23232a;border-radius:9999px;padding:4px">
+          <button onClick="{{ setMobile }}" style="{{ mobBtnStyle }}">Mobile</button>
+          <button onClick="{{ setDesktop }}" style="{{ deskBtnStyle }}">Desktop</button>
+        </div>
+        <div style="display:flex;gap:6px;background:#000;border:1px solid #23232a;border-radius:9999px;padding:4px">
+          <button onClick="{{ setOffline }}" style="{{ offBtnStyle }}">● Offline</button>
+          <button onClick="{{ setLive }}" style="{{ liveBtnStyle }}">● Live now</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button onClick="{{ selectHero1 }}" style="position:relative;flex:1;min-width:120px;background:#000;border:1px solid #23232a;border-radius:10px;padding:11px 12px 13px;color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;text-align:left">01 · Cinematic<div style="font:400 10px/1.2 'Barlow';text-transform:none;letter-spacing:0;color:#787878;margin-top:3px">Video + corner timer</div><sc-if value="{{ isHero1 }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#00FF00;border-radius:2px"></div></sc-if></button>
+      <button onClick="{{ selectHero2 }}" style="position:relative;flex:1;min-width:120px;background:#000;border:1px solid #23232a;border-radius:10px;padding:11px 12px 13px;color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;text-align:left">02 · Prize Pot<div style="font:400 10px/1.2 'Barlow';text-transform:none;letter-spacing:0;color:#787878;margin-top:3px">Giant $1,000 pot</div><sc-if value="{{ isHero2 }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#00FF00;border-radius:2px"></div></sc-if></button>
+      <button onClick="{{ selectHero3 }}" style="position:relative;flex:1;min-width:120px;background:#000;border:1px solid #23232a;border-radius:10px;padding:11px 12px 13px;color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;text-align:left">03 · Countdown<div style="font:400 10px/1.2 'Barlow';text-transform:none;letter-spacing:0;color:#787878;margin-top:3px">Big flip clock</div><sc-if value="{{ isHero3 }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#00FF00;border-radius:2px"></div></sc-if></button>
+      <button onClick="{{ selectHero4 }}" style="position:relative;flex:1;min-width:120px;background:#000;border:1px solid #23232a;border-radius:10px;padding:11px 12px 13px;color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;text-align:left">04 · Starring<div style="font:400 10px/1.2 'Barlow';text-transform:none;letter-spacing:0;color:#787878;margin-top:3px">Greg, Josh &amp; crew</div><sc-if value="{{ isHero4 }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#00FF00;border-radius:2px"></div></sc-if></button>
+      <button onClick="{{ selectHero5 }}" style="position:relative;flex:1;min-width:120px;background:#000;border:1px solid #23232a;border-radius:10px;padding:11px 12px 13px;color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;text-align:left">05 · Below Banners<div style="font:400 10px/1.2 'Barlow';text-transform:none;letter-spacing:0;color:#787878;margin-top:3px">Full-width module</div><sc-if value="{{ isHero5 }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#00FF00;border-radius:2px"></div></sc-if></button>
+    </div>
+  </div>
+
+  <!-- ░░ MOBILE SHELL ░░ -->
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ true }}">
+  <div style="width:390px;max-width:100%;background:#050507;border:1px solid #1c1c22;border-radius:46px;padding:10px;box-shadow:0 24px 70px rgba(0,0,0,.6)">
+    <div style="position:relative;border-radius:38px;overflow:hidden;height:728px;background:#000">
+      <div id="wtf-scroller" data-noscroll style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden">
+
+        <div style="position:relative;z-index:5;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:12px;font-weight:600;color:#fff">
+          <span>9:41</span>
+          <span style="display:flex;gap:5px;align-items:center;font-size:11px">●●● ▮▮▮ <span style="border:1px solid #fff;border-radius:3px;padding:0 3px;font-size:9px">82</span></span>
+        </div>
+
+        <!-- header: logo top-left, wallet right, no hamburger -->
+        <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 16px 12px;background:linear-gradient(180deg,#000 64%,rgba(0,0,0,0));backdrop-filter:blur(2px)">
+          <img src="uploads/WTF_games.png" alt="WTF Games" style="height:30px;width:auto;display:block"/>
+          <div style="display:flex;align-items:center;gap:8px;background:#101014;border:1px solid #23232a;border-radius:10px;padding:5px 6px 5px 10px">
+            <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;line-height:1">$1,250<span style="font-size:9px;color:#A5A5A5;margin-left:3px">USDC</span></span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:#00FF00;color:#000;font-size:16px;font-weight:800;line-height:1">+</span>
+          </div>
+        </div>
+
+        <dc-import name="WTF Lobby Content" hero="{{ hero }}" live="{{ live }}" cd="{{ cd }}" viewers="{{ viewers }}" prize="{{ prize }}" scroller-id="wtf-scroller" hint-size="100%,820px" style="display:block;width:100%"></dc-import>
+        <!-- mobile content (desktop flag defaults false) -->
+
+        <div style="height:80px"></div>
+
+        <!-- bottom nav -->
+        <div style="position:sticky;bottom:0;z-index:25;display:flex;align-items:flex-end;justify-content:space-around;padding:8px 6px 14px;background:linear-gradient(180deg,rgba(8,8,10,0),#08080a 38%);backdrop-filter:blur(6px);border-top:1px solid #1a1a20">
+          <button onClick="{{ gotoTop }}" style="flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:#00FF00;font-size:9px;font-weight:600;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00FF00" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>Home</button>
+          <button style="flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:#787878;font-size:9px;font-weight:600;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><path d="M12 3l2.9 6 6.6 1-4.8 4.6 1.2 6.7L12 18l-5.9 3.3L7.3 14.6 2.5 10l6.6-1z"/></svg>Slots</button>
+          <button onClick="{{ gotoTop }}" style="flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer"><span style="width:46px;height:46px;border-radius:50%;background:#00FF00;display:flex;align-items:center;justify-content:center;margin-top:-18px;box-shadow:0 0 18px rgba(0,255,0,.5)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="12" cy="12" r="3" fill="#000"/><circle cx="12" cy="12" r="7"/></svg></span><span style="color:#00FF00;font-size:9px;font-weight:700">WTF Live</span></button>
+          <button style="flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:#787878;font-size:9px;font-weight:600;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><path d="M12 3c1 5 6 6 6 11a6 6 0 0 1-12 0c0-3 2-4 3-6 0 2 1 3 2 3 0-3-1-5 1-8z"/></svg>Leagues</button>
+          <button style="flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:#787878;font-size:9px;font-weight:600;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h2"/></svg>Wallet</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ░░ DESKTOP SHELL ░░ -->
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+  <div style="width:min(1180px,96vw);background:#050507;border:1px solid #1c1c22;border-radius:14px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6)">
+    <!-- window chrome -->
+    <div style="height:40px;display:flex;align-items:center;gap:8px;padding:0 14px;background:#0c0c10;border-bottom:1px solid #1a1a20">
+      <span style="width:11px;height:11px;border-radius:50%;background:#FF5F57"></span>
+      <span style="width:11px;height:11px;border-radius:50%;background:#FEBC2E"></span>
+      <span style="width:11px;height:11px;border-radius:50%;background:#28C840"></span>
+      <div style="flex:1;display:flex;justify-content:center"><div style="background:#000;border:1px solid #23232a;border-radius:7px;padding:4px 16px;font-size:11px;color:#787878">wtfgames.com/casino</div></div>
+    </div>
+    <!-- app body -->
+    <div style="display:flex;height:720px">
+      <!-- sidebar -->
+      <nav style="flex:0 0 230px;background:#0E0E10;border-right:1px solid #23232a;display:flex;flex-direction:column;padding:0 0 18px;overflow-y:auto" data-noscroll>
+        <img src="uploads/sidenav.png" alt="WTF Games" style="width:100%;display:block"/>
+        <div style="height:1px;background:#23232a;margin:0 0 14px"></div>
+        <div style="margin:0 16px 14px;display:flex;align-items:center;gap:9px;background:#141418;border:1px solid #23232a;border-radius:10px;padding:10px 12px;color:#A5A5A5"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span style="font-size:13px">Search…</span></div>
+        <div style="height:1px;background:#23232a;margin:0 0 6px"></div>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+          <button style="{{ n.rowStyle }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ n.iconColor }}" stroke-width="1.8"><path d="{{ n.d }}"/></svg>{{ n.label }}</button>
+        </sc-for>
+        <div style="flex:1"></div>
+        <div style="height:1px;background:#23232a;margin:6px 16px"></div>
+        <button style="display:flex;align-items:center;gap:13px;padding:10px 20px;background:none;border:none;color:#A5A5A5;font-size:14px;font-family:inherit;cursor:pointer;text-align:left"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.9.4-1 1-1 1.7M12 17v.01"/></svg>Help</button>
+        <button style="display:flex;align-items:center;gap:13px;padding:10px 20px;background:none;border:none;color:#A5A5A5;font-size:14px;font-family:inherit;cursor:pointer;text-align:left"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#787878" stroke-width="1.8"><path d="M4 5h16v11H7l-3 3z"/><circle cx="9.5" cy="10.5" r="1"/><circle cx="14.5" cy="10.5" r="1"/></svg>Discord Support</button>
+      </nav>
+      <!-- main -->
+      <main style="flex:1;display:flex;flex-direction:column;min-width:0">
+        <header style="height:60px;display:flex;align-items:center;gap:16px;padding:0 22px;background:#000;border-bottom:1px solid #23232a">
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:9px;background:#101014;border:1px solid #303036;border-radius:10px;padding:6px 8px 6px 12px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h2"/></svg>
+            <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;line-height:1">$1,250<span style="font-size:10px;color:#A5A5A5;margin-left:4px">USDC</span></span>
+            <button style="background:#00FF00;color:#000;border:none;border-radius:7px;padding:5px 12px;font-size:12px;font-weight:700;text-transform:uppercase;cursor:pointer">Deposit</button>
+          </div>
+          <button style="height:40px;padding:0 16px;background:transparent;border:1px solid #fff;color:#fff;border-radius:8px;font-family:'Oswald';font-weight:700;font-size:14px;text-transform:uppercase;cursor:pointer">Sign in</button>
+          <button style="height:40px;padding:0 16px;background:#00FF00;border:none;color:#000;border-radius:8px;font-family:'Oswald';font-weight:700;font-size:14px;text-transform:uppercase;cursor:pointer">Sign up</button>
+        </header>
+        <div id="wtf-scroller-d" data-noscroll style="flex:1;overflow-y:auto;overflow-x:hidden">
+          <dc-import name="WTF Lobby Content" hero="{{ hero }}" live="{{ live }}" cd="{{ cd }}" viewers="{{ viewers }}" prize="{{ prize }}" scroller-id="wtf-scroller-d" desktop="{{ isDesktop }}" hint-size="100%,820px" style="display:block;width:100%"></dc-import>
+        </div>
+      </main>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;weeklyPrize&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;$1,000&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;defaultHero&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;1&quot;,&quot;options&quot;:[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;defaultLive&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;defaultView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;mobile&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { view: 'mobile', hero: 1, live: false, cd: { d: '01', h: '06', m: '22', s: '14' }, viewers: '1,240' };
+
+  componentDidMount() {
+    this.target = Date.now() + 86400000 + 6 * 3600000 + 22 * 60000 + 14000;
+    this.update();
+    this.tick = setInterval(() => this.update(), 1000);
+    const patch = {};
+    const dh = parseInt(this.props.defaultHero, 10);
+    if (dh >= 1 && dh <= 5) patch.hero = dh;
+    if (this.props.defaultLive) patch.live = true;
+    if (this.props.defaultView === 'desktop') patch.view = 'desktop';
+    if (Object.keys(patch).length) this.setState(patch);
+  }
+  componentWillUnmount() { clearInterval(this.tick); }
+
+  update() {
+    let t = this.target - Date.now();
+    if (t < 0) t = 0;
+    const p = n => String(n).padStart(2, '0');
+    const d = Math.floor(t / 86400000);
+    const h = Math.floor((t % 86400000) / 3600000);
+    const m = Math.floor((t % 3600000) / 60000);
+    const s = Math.floor((t % 60000) / 1000);
+    const v = 1180 + Math.floor(Math.random() * 130);
+    this.setState({ cd: { d: p(d), h: p(h), m: p(m), s: p(s) }, viewers: v.toLocaleString() });
+  }
+
+  gotoTop = () => {
+    const sc = document.getElementById('wtf-scroller');
+    if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  renderVals() {
+    const { view, hero, live, cd, viewers } = this.state;
+    const prize = this.props.weeklyPrize ?? '$1,000';
+
+    const nav = [
+      { label: 'Originals', d: 'M12 3l2.9 6 6.6 1-4.8 4.6 1.2 6.7L12 18l-5.9 3.3L7.3 14.6 2.5 10l6.6-1z', active: true },
+      { label: 'Slots', d: 'M12 2l9 10-9 10L3 12z' },
+      { label: 'Table Games', d: 'M3 6h18v12H3zM3 11h18' },
+      { label: 'Blackjack', d: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z' },
+      { label: 'Roulette', d: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3v18' },
+      { label: 'Game Shows', d: 'M7 4h10v4a5 5 0 0 1-10 0zM9 20h6M12 13v7' },
+      { label: 'Sports | Coming Soon', d: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2c3 3.5 3 16.5 0 20' },
+      { label: 'Promotions', d: 'M20 8H4v4h16zM4 12v8h16v-8M12 8v12' },
+    ];
+    const navItems = nav.map(n => ({
+      label: n.label, d: n.d,
+      iconColor: n.active ? '#00FF00' : '#fff',
+      rowStyle: `display:flex;align-items:center;gap:13px;padding:11px 18px;background:${n.active ? 'rgba(0,255,0,.08)' : 'transparent'};border:none;border-left:2px solid ${n.active ? '#00FF00' : 'transparent'};color:#fff;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;text-align:left;width:100%`,
+    }));
+
+    const tb = 'border:none;border-radius:9999px;padding:6px 13px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s';
+    const on = ';background:#00FF00;color:#000';
+    const off = ';background:transparent;color:#787878';
+    const liveOff = ';background:#A5A5A5;color:#000';
+
+    return {
+      view, isMobile: view === 'mobile', isDesktop: view === 'desktop',
+      hero, live, viewers, cd, prize,
+      cdCompact: `${parseInt(cd.d, 10)}d ${cd.h}:${cd.m}:${cd.s}`,
+      isHero1: hero === 1, isHero2: hero === 2, isHero3: hero === 3, isHero4: hero === 4, isHero5: hero === 5,
+      navItems,
+      mobBtnStyle: tb + (view === 'mobile' ? on : off),
+      deskBtnStyle: tb + (view === 'desktop' ? on : off),
+      offBtnStyle: tb + (live ? off : liveOff),
+      liveBtnStyle: tb + (live ? ';background:#FF0000;color:#fff' : off),
+      selectHero1: () => this.setState({ hero: 1 }),
+      selectHero2: () => this.setState({ hero: 2 }),
+      selectHero3: () => this.setState({ hero: 3 }),
+      selectHero4: () => this.setState({ hero: 4 }),
+      selectHero5: () => this.setState({ hero: 5 }),
+      setLive: () => this.setState({ live: true }),
+      setOffline: () => this.setState({ live: false }),
+      setMobile: () => this.setState({ view: 'mobile' }),
+      setDesktop: () => this.setState({ view: 'desktop' }),
+      gotoTop: this.gotoTop,
+    };
+  }
+}
+</script>
+</body>
+</html>

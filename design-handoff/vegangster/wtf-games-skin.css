@@ -1,0 +1,59 @@
+/* WTF Games skin for the Vegangster frontend — first pass, token layer only.
+   Vegangster serves one :root token file per brand (see demo-theme.vegangster.css).
+   This file maps our src/index.css tokens onto their token names. It was proven by
+   injecting these values over demo.vegangster.com — see wtf-skin-*.jpg.
+   Still hardcoded in their app (not reachable via tokens): logo image, the
+   "What are you playing today?" hero panel background, hero tile fills, nav
+   icon set. Those need the back-office Design Agent Skill / custom components. */
+:root {
+  /* Accent 1 = WTF green (drives Sign Up / Deposit / focus / tab bar stroke) */
+  --token-brand-brand-color-1-100:#b3ffb3; --token-brand-brand-color-1-300:#66ff66;
+  --token-brand-brand-color-1-400:#33ff33; --token-brand-brand-color-1-500:#00ff00;
+  --token-brand-brand-color-1-600:#009b00;
+  /* Accent 2 = magenta, Accent 3 = cyan */
+  --token-brand-brand-color-2-100:#f6c9ff; --token-brand-brand-color-2-300:#ec7dff;
+  --token-brand-brand-color-2-400:#e128ff; --token-brand-brand-color-2-500:#b41fcc;
+  --token-brand-brand-color-2-600:#7d1690;
+  --token-brand-brand-color-3-100:#c9f1ff; --token-brand-brand-color-3-300:#6fdbff;
+  --token-brand-brand-color-3-400:#05c5ff; --token-brand-brand-color-3-500:#049ccb;
+  --token-brand-brand-color-3-600:#037396;
+  --token-brand-brand-color-3-500-rgb:5, 197, 255;
+  /* Text ramp (their "primary-1") */
+  --token-brand-primary-1-100:#5a5a5a; --token-brand-primary-1-200:#787878;
+  --token-brand-primary-1-300:#a5a5a5; --token-brand-primary-1-400:#d2d2d2;
+  --token-brand-primary-1-500:#e6e6e6; --token-brand-primary-1-600:#ffffff;
+  /* Surfaces (their numbered "secondary" slots) */
+  --token-brand-secondary-1:#0e0e10;  /* sidenav */
+  --token-brand-secondary-2:#141418;  /* panel alt */
+  --token-brand-secondary-4:#08080c;  /* page bg */
+  --token-brand-secondary-5:#101014;  /* panel */
+  --token-brand-secondary-6:rgba(44,44,51,0.6); /* borders */
+  --token-brand-secondary-7:#141418; --token-brand-secondary-8:#111111;
+  --token-brand-secondary-9:#d2d2d2; --token-brand-secondary-12:#00ff00;
+  --token-brand-secondary-15:#141418; --token-brand-secondary-19:#101014;
+  --token-brand-secondary-20:#141418; --token-brand-secondary-22:#0e0e10;
+  --token-brand-secondary-24:rgba(16,16,20,0.85);
+  --token-brand-secondary-4-rgb:8, 8, 12; --token-brand-secondary-5-rgb:16, 16, 20;
+  /* Buttons: green fill, black text */
+  --token-brand-button-banner-text:#000; --token-brand-button-banner-normal:#00ff00;
+  --token-brand-button-banner-hover:#33ff33; --token-brand-button-banner-active:#009b00;
+  --token-brand-button-deposit-text:#000; --token-brand-button-deposit-normal:#00ff00;
+  --token-brand-button-deposit-hover:#33ff33; --token-brand-button-deposit-active:#009b00;
+  /* Fades and glass */
+  --token-brand-gradient-9:linear-gradient(270deg, rgba(8,8,12,0) 0%, #08080c 100%);
+  --token-brand-gradient-10:linear-gradient(180deg, #101014 0%, rgba(16,16,20,0) 100%);
+  --token-brand-gradient-11:linear-gradient(180deg, rgba(8,8,12,0) 0%, #08080c 100%);
+  --token-brand-gradient-13:linear-gradient(90deg, rgba(0,255,0,0.18) 0%, rgba(8,8,12,0.4) 100%);
+  --token-brand-gradient-14:linear-gradient(180deg, rgba(16,16,20,0) 0%, #101014 100%);
+  --token-brand-glass-effect-general:rgba(16,16,20,0.55);
+  --token-brand-glass-effect-brand:rgba(0,255,0,0.22);
+  --token-brand-glass-effect-stroke:rgba(0,255,0,0.35);
+  --token-datauri-background-pattern:none;
+  /* Type: left on Vegangster's default stack (Arial/Helvetica). Korolev is an Adobe font and
+     is not the long-term direction, so no font tokens are overridden here. */
+  /* Radii: their default is 20–30px pills; ours is tighter */
+  --token-border-radius-button:8px; --token-border-radius-buttons-sm:8px;
+  --token-border-radius-buttons-md:8px; --token-border-radius-buttons-lg:10px;
+  --token-border-radius-tabs-category-tab-v2:8px; --token-border-radius-input:8px;
+  --token-border-radius-label:6px;
+}

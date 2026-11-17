@@ -1,0 +1,226 @@
+/* ============================================================
+   WTF Games — design tokens + globals
+   Ported from the design handoff (see design-handoff/DESIGN_SPEC.md)
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --c-black: #08080a;
+  --c-black-pure: #000000;
+  --c-hero-base: #08080c;
+  --c-sidenav: #0e0e10;
+  --c-panel: #101014;
+  --c-panel-alt: #141418;
+  --c-card: #111111;
+
+  /* Borders */
+  --c-border: #23232a;
+  --c-border-alt: #2c2c33;
+  --c-border-alt2: #303036;
+
+  /* Accents */
+  --c-green: #00ff00;
+  --c-magenta: #e128ff;
+  --c-cyan: #05c5ff;
+  --c-red: #ff0000;
+  --c-orange: #cf640d;
+  --c-purple: #4800ff;
+
+  /* Text */
+  --c-text: #ffffff;
+  --c-text-dim: #d2d2d2;
+  --c-text-muted: #a5a5a5;
+  --c-text-faint: #787878;
+  --c-text-fainter: #5a5a5a;
+
+  /* Type — Korolev is served to everyone by the Adobe Fonts kit linked in
+     index.html (same kit as the WTF Racing page). Adobe's family names:
+       korolev-compressed-light → Korolev Compressed (display; Heavy = weight 900)
+       korolev-thin             → Korolev (body)
+     A locally-installed Korolev is the second fallback (offline work), then
+     Oswald. Display text must set font-weight 900 to get the Heavy cut. */
+  --f-display: 'korolev-compressed-light', 'Korolev Compressed Heavy', 'Oswald', 'Helvetica Neue', Arial, sans-serif;
+  --f-body: 'korolev-thin', 'Korolev', 'Korolev Compressed', 'Oswald', 'Barlow', Helvetica, Arial, sans-serif;
+  --f-sticker: 'Luckiest Guy', cursive;
+
+  /* Effects */
+  --shadow-card: 0 6px 14px rgba(0, 0, 0, 0.5);
+  --shadow-deep: 0 24px 70px rgba(0, 0, 0, 0.6);
+  --glow-green: 0 0 24px rgba(0, 255, 0, 0.45);
+  --glow-green-strong: 0 0 34px rgba(0, 255, 0, 0.6);
+
+  /* Hero protection gradients (Netflix-style) */
+  --hero-wash: linear-gradient(
+    100deg,
+    rgba(8, 8, 12, 0.96) 0%,
+    rgba(8, 8, 12, 0.8) 26%,
+    rgba(8, 8, 12, 0.4) 50%,
+    rgba(8, 8, 12, 0.05) 72%,
+    transparent 90%
+  );
+  --hero-fade: linear-gradient(0deg, #08080c 0%, rgba(8, 8, 12, 0.55) 16%, transparent 46%);
+}
+
+/* Second-position fallback: a locally-installed Korolev Compressed Heavy
+   (single Heavy face, hence the wide weight range). The web is served by the
+   Adobe Fonts kit in index.html; this only kicks in if the kit fails. */
+@font-face {
+  font-family: 'Korolev Compressed Heavy';
+  src:
+    local('Korolev Compressed Heavy'),
+    local('KorolevCompressed-Heavy');
+    /* , url('/fonts/KorolevCompressed-Heavy.woff2') format('woff2'); */
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body / sub copy face. Picks up an installed Korolev (regular/medium) for the
+   brand look; falls back to Oswald via the --f-body stack when not installed.
+   Drop a webfont in public/fonts/ and add a url() here to serve it to the web.
+   Weights split so 700 resolves to a REAL bold face (or a bold fallback)
+   instead of silently reusing the Medium face un-bolded. */
+@font-face {
+  font-family: 'Korolev';
+  src:
+    local('Korolev'),
+    local('Korolev Medium'),
+    local('Korolev-Medium'),
+    local('Korolev Regular'),
+    local('Korolev-Regular');
+  font-weight: 300 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Korolev';
+  src:
+    local('Korolev Bold'),
+    local('Korolev-Bold'),
+    local('Korolev Heavy'),
+    local('Korolev-Heavy');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--c-black);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: radial-gradient(130% 90% at 50% 0%, #16161d 0%, #08080a 60%);
+}
+
+button {
+  font-family: inherit;
+}
+
+img,
+video {
+  display: block;
+}
+
+/* Hidden scrollbars on horizontal rails / scroll containers */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cover / clip card hover lift */
+.lift {
+  transition: transform 0.18s ease;
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-3px);
+  }
+  .brighten:hover {
+    filter: brightness(1.08);
+  }
+  .promo-banner:hover {
+    filter: brightness(1.05);
+  }
+}
+
+/* Keyframes from the handoff */
+@keyframes wtfPan {
+  0% {
+    transform: translate3d(-2%, -2%, 0) scale(1.12);
+  }
+  50% {
+    transform: translate3d(2%, 1%, 0) scale(1.2);
+  }
+  100% {
+    transform: translate3d(-2%, -2%, 0) scale(1.12);
+  }
+}
+@keyframes wtfBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.25;
+  }
+}
+@keyframes wtfFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+/* Live play button: pulse the scale + glow */
+@keyframes wtfPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 22px rgba(0, 255, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 0 46px rgba(0, 255, 0, 0.85);
+  }
+}
+
+/* Hero video side-edge feather — only when the content container is near its cap
+   (big screens with side margins). At ≤1440 / on mobile the video is full-width,
+   so no side fade. The container is the capped content column in DesktopShell. */
+@container (min-width: 1900px) {
+  .hero-video {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+  }
+}
+
+/* D Swipe (mobile lobby 02): the copy layer sits over the banner scroller. It
+   must not swallow touches — a swipe that starts on the headline or timer has
+   to reach the scroller underneath — so only its buttons are hit-testable. */
+.d-copy {
+  pointer-events: none;
+}
+.d-copy button {
+  pointer-events: auto;
+}
