@@ -34,8 +34,9 @@
 .veg .vh {
   font-family: var(--token-font-banner-family);
   font-weight: var(--token-font-banner-weight);
-  letter-spacing: -0.015em;
+  letter-spacing: 0.005em;
   line-height: 1.05;
+  text-transform: uppercase;
 }
 .veg .vc {
   font-family: var(--token-font-card-family);

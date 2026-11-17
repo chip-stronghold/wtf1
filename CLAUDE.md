@@ -41,8 +41,8 @@ public/uploads/              brand marks, game covers (WTF Games/), studio art
 
 ## Rules
 
-- **Type stays on Vegangster's default stack** (Arial/Helvetica). Korolev is ruled out
-  for this platform (Adobe-licensed). Do not add brand fonts to the canvas.
+- **Type: Oswald from Google Fonts** (trial, 17 Nov 2026), loaded in `index.html` and set via
+  the `--token-font-*` tokens. Korolev is ruled out for this platform (Adobe-licensed).
 - **Green-filled buttons carry black text**, never white.
 - **No gradient fills** on cards. Flat token surfaces; real covers for games.
 - Nothing in the canvas may hard-code a colour, radius or font — everything goes

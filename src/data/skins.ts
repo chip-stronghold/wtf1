@@ -52,7 +52,8 @@ export interface Palette {
   radius: { button: number; buttonLg: number; tab: number; input: number; label: number }
 }
 
-const DEFAULT_FONT = '"Arial", "Helvetica Neue", "Helvetica", sans-serif'
+/** Trial type: Oswald (Google Fonts, OFL) in every slot — display weight 600, UI weight 400. */
+const DEFAULT_FONT = '"Oswald", "Arial Narrow", Arial, sans-serif'
 
 function rgb(hex: string): string {
   const h = hex.replace('#', '')
@@ -131,11 +132,11 @@ export function buildTokens(p: Palette): Tokens {
     '--token-brand-shadow-3': '0px -4px 7px rgba(0, 0, 0, 0.05)',
     '--token-brand-shadow-4': '0px 1px 5px 0px rgba(0, 0, 0, 0.15)',
     '--token-font-card-family': DEFAULT_FONT,
-    '--token-font-card-weight': '700',
+    '--token-font-card-weight': '600',
     '--token-font-banner-family': DEFAULT_FONT,
-    '--token-font-banner-weight': '700',
+    '--token-font-banner-weight': '600',
     '--token-font-map-family': DEFAULT_FONT,
-    '--token-font-map-weight': '700',
+    '--token-font-map-weight': '600',
     '--token-font-ui-family': DEFAULT_FONT,
     '--token-font-ui-weight': '400',
     '--token-typography-size-xs': '8px',
@@ -283,5 +284,5 @@ export const TOKEN_GROUPS: { title: string; match: (k: string) => boolean }[] = 
   { title: 'Status', match: (k) => /^--token-brand-(error|warning|success|info)-/.test(k) },
   { title: 'Radii', match: (k) => k.startsWith('--token-border-radius-') },
   { title: 'Gradients + glass', match: (k) => k.startsWith('--token-brand-gradient-') || k.startsWith('--token-brand-constructor-') || k.startsWith('--token-brand-glass-') },
-  { title: 'Type (left on their default stack)', match: (k) => k.startsWith('--token-font-') || k.startsWith('--token-typography-size-') },
+  { title: 'Type (Oswald trial)', match: (k) => k.startsWith('--token-font-') || k.startsWith('--token-typography-size-') },
 ]

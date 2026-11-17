@@ -54,7 +54,7 @@ export function TokensControlBar({ skin, onSkin, sheet, onSheet, isDesktop, onVi
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
         <div style={{ flex: '0 0 auto' }}>
           <div style={{ fontFamily: 'var(--f-display)', fontWeight: 900, fontSize: 18, textTransform: 'uppercase', lineHeight: 1 }}>Vegangster skin — WTF Games</div>
-          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>Their demo, module for module · their default type · every token in their own names</div>
+          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>Their demo, module for module · Oswald trial · every token in their own names</div>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
           <div style={pillRow}>
