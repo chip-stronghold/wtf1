@@ -6,11 +6,20 @@ produce the token file they need. Live at https://wtf1-nine.vercel.app. Repo
 `github.com/chip-stronghold/wtf1`. Deploys from `main` via Vercel.
 
 **Scope rule:** the canvas only contains what Vegangster's demo contains — their
-modules, in their order (glass header with product tabs · 340px side menu on desktop ·
-"What are you playing today?" carousel ·
-jackpot tiers + opt-in · Top grid · Our Streamers · Providers · Top events · bets
-feed · SEO text + footer · floating bottom nav). No modules from our older
-mock-ups. Content is mock (made-up nicknames) with our own game covers.
+pages, their modules, their interactions. No modules from our older mock-ups.
+Content is mock (made-up nicknames) with our own game covers and studio art.
+
+Pages (`src/data/pages.ts` lists each with their path): Home `/` · Casino hub `/casino` ·
+Category grid `/casino/slots` · Live Casino `/live-casino/all` · Sport `/sports` ·
+Predictions `/sports/predictions` · Studio Packs (their Phygitals `/pokemon`) · PVP Arena
+`/pvp` · Promotions `/casino-promo/all-promo` · Tournaments · Contests · Lotteries ·
+Game page `/game/…` · Login and Sign-up (bonus step) dialogs. Their `/155_io` is an empty
+third-party embed and is not reproduced.
+
+Interactions that work in-canvas: side-menu accordions and language menu, product tabs,
+bottom nav pill, chips/tabs, odds buttons (select/deselect), toggles, hero carousel
+(tap to centre, tap again to open), game tiles → game page, pack price/quantity,
+settings popover, login ↔ sign-up switch, mobile back arrow. All reflected in the URL.
 
 ```bash
 npm run dev      # http://localhost:5173
@@ -25,8 +34,10 @@ src/data/skins.ts            3 skin directions as palettes → expanded to Vegan
                              the :root block their theme file uses (Copy CSS button). SKIN_PICK.
 src/data/demo.ts             mock content shaped like their demo (games, jackpot tiers, streamers,
                              providers, events, bets, footer)
-src/components/tokens/       TokensScreen (the canvas, token-only styling) · TokensControlBar ·
-                             TokenSheet (every token, click to copy) · icons
+src/components/tokens/       TokensScreen (router + frames) · chrome (header, side menu, nav pill,
+                             tiles, chips) · home · pages (all other pages) · modals · TokensControlBar
+                             (page dropdown, dialogs, skins) · TokenSheet · icons
+src/data/pages.ts            page list + per-page mock content
 src/tokens.css               .veg scope: base type/colour + the few shared component classes
 src/hooks/useReviewOverrides URL state
 design-handoff/vegangster/   their demo theme file, our mapping, screenshots, notes
@@ -37,7 +48,8 @@ public/uploads/              brand marks, game covers (WTF Games/), studio art
 
 ```
 ?skin=1..3   V1 Night · V2 Forest · V3 Carbon (graphite, PICK, default) — all green-primary
-?view=mobile | desktop      ?sheet=1 token sheet      ?controls=0 clean build
+?page=home|casino|slots|live|sport|predictions|packs|pvp|promotions|tournaments|contests|lotteries|game
+?modal=login|signup         ?view=mobile | desktop      ?sheet=1 token sheet      ?controls=0 clean build
 ```
 
 ## Rules

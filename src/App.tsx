@@ -1,12 +1,13 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { DESKTOP_BREAKPOINT } from './config'
 import { useMediaQuery } from './hooks/useMediaQuery'
-import { getReviewOverrides } from './hooks/useReviewOverrides'
+import { getReviewOverrides, writeOverrides } from './hooks/useReviewOverrides'
 import { ScaledFrame } from './components/ScaledFrame'
 import { TokensControlBar } from './components/tokens/TokensControlBar'
 import { TokensScreen } from './components/tokens/TokensScreen'
 import { TokenSheet } from './components/tokens/TokenSheet'
 import { SKINS, type SkinId } from './data/skins'
+import type { ModalId, PageId } from './data/pages'
 
 /** Desktop breakpoint preview widths (review only) and their window body heights. */
 export type DesktopWidth = 1440 | 2560 | 3440
@@ -28,17 +29,24 @@ export default function App() {
   const [desktopWidth, setDesktopWidth] = useState<DesktopWidth>(1440)
   const [skin, setSkin] = useState<SkinId>(overrides.skin)
   const [sheet, setSheet] = useState(overrides.sheet)
+  const [page, setPage] = useState<PageId>(overrides.page)
+  const [modal, setModal] = useState<ModalId>(overrides.modal)
 
   const isDesktop = viewOverride ? viewOverride === 'desktop' : matchesDesktop
   const tokens = SKINS[skin].tokens
 
+  useEffect(() => {
+    writeOverrides({ skin, page, modal, view: viewOverride, sheet })
+  }, [skin, page, modal, viewOverride, sheet])
+
+  const screenProps = { tokens, page, onPage: setPage, modal, onModal: setModal }
   const screen = isDesktop ? (
     <ScaledFrame naturalWidth={desktopWidth} naturalHeight={40 + BODY_H[desktopWidth]}>
-      <TokensScreen tokens={tokens} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} />
+      <TokensScreen {...screenProps} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} />
     </ScaledFrame>
   ) : (
     <PhoneFrame>
-      <TokensScreen tokens={tokens} isDesktop={false} width={390} bodyHeight={740} />
+      <TokensScreen {...screenProps} isDesktop={false} width={390} bodyHeight={740} />
     </PhoneFrame>
   )
 
@@ -46,7 +54,7 @@ export default function App() {
   if (overrides.controls) {
     return (
       <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 16px 64px', gap: 22 }}>
-        <TokensControlBar skin={skin} onSkin={setSkin} sheet={sheet} onSheet={setSheet} isDesktop={isDesktop} onView={setViewOverride} desktopWidth={desktopWidth} onDesktopWidth={setDesktopWidth} />
+        <TokensControlBar skin={skin} onSkin={setSkin} page={page} onPage={setPage} modal={modal} onModal={setModal} sheet={sheet} onSheet={setSheet} isDesktop={isDesktop} onView={setViewOverride} desktopWidth={desktopWidth} onDesktopWidth={setDesktopWidth} />
         <div style={{ display: 'flex', gap: 22, alignItems: 'flex-start', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
           {screen}
           {sheet && <TokenSheet skin={skin} />}
@@ -60,14 +68,14 @@ export default function App() {
     return (
       <div style={{ height: '100dvh', background: 'var(--c-black)', display: 'flex', justifyContent: 'center' }}>
         <ScaledFrame naturalWidth={desktopWidth} naturalHeight={40 + BODY_H[desktopWidth]}>
-          <TokensScreen tokens={tokens} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} />
+          <TokensScreen {...screenProps} isDesktop width={desktopWidth} bodyHeight={BODY_H[desktopWidth]} />
         </ScaledFrame>
       </div>
     )
   }
   return (
     <div style={{ height: '100dvh', background: 'var(--c-black)' }}>
-      <TokensScreen tokens={tokens} isDesktop={false} width={390} bodyHeight={740} />
+      <TokensScreen {...screenProps} isDesktop={false} width={390} bodyHeight={740} />
     </div>
   )
 }

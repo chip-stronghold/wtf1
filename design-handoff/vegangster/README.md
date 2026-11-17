@@ -12,7 +12,7 @@ What they *do* have (per their CPO, iGaming Expert, 2 Nov 2026):
   (`/media/theme/<brand>.<ts>.css`, ~130 tokens) plus BEM `ui-*` components.
 
 Live playground: https://wtf1-nine.vercel.app (repo chip-stronghold/wtf1) — their demo
-rebuilt module for module on a token-only kit, three skin directions, token sheet, Copy-CSS export.
+rebuilt page for page (13 pages + login/sign-up dialogs, interactions included) on a token-only kit, three skin directions, token sheet, Copy-CSS export.
 AJ picked **V3 Carbon** (17 Nov 2026): graphite surfaces, magenta CTA, green reserved for wins.
 
 Files here:

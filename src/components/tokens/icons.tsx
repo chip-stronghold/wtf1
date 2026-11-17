@@ -8,6 +8,12 @@ export const Icon = {
       <path d="M12 7c-1.5-3-6-3-6-1s4 1 6 1zm0 0c1.5-3 6-3 6-1s-4 1-6 1z" />
     </>
   ),
+  search: (
+    <>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </>
+  ),
   star: <path d="M12 3l2.9 6 6.6 1-4.8 4.6 1.2 6.7L12 18l-5.9 3.3L7.3 14.6 2.5 10l6.6-1z" />,
   slots: <path d="M12 2l9 10-9 10L3 12z" />,
   ball: (
@@ -52,6 +58,7 @@ export const Icon = {
   ),
   chevron: <path d="M9 6l6 6-6 6" />,
   chevronDown: <path d="M6 9l6 6 6-6" />,
+  chevronUp: <path d="M6 15l6-6 6 6" />,
   chevronLeft: <path d="M15 6l-6 6 6 6" />,
   tag: <path d="M20 12l-8 8-9-9V4h7zM7.5 7.5h.01" />,
   flag: <path d="M5 21V4h11l-1.5 4L16 12H5" />,

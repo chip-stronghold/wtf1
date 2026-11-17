@@ -1,5 +1,6 @@
 import { useState, type CSSProperties } from 'react'
 import { PALETTES, SKIN_PICK, skinToCss, type SkinId } from '../../data/skins'
+import { PAGES, type ModalId, type PageId } from '../../data/pages'
 
 const pillRow: CSSProperties = { display: 'flex', gap: 4, alignItems: 'center', background: '#000', border: '1px solid var(--c-border)', borderRadius: 9999, padding: 4 }
 
@@ -22,6 +23,10 @@ function pill(active: boolean, activeBg: string, activeColor: string): CSSProper
 interface Props {
   skin: SkinId
   onSkin: (s: SkinId) => void
+  page: PageId
+  onPage: (p: PageId) => void
+  modal: ModalId
+  onModal: (m: ModalId) => void
   sheet: boolean
   onSheet: (b: boolean) => void
   isDesktop: boolean
@@ -31,9 +36,11 @@ interface Props {
 }
 
 /** Review controller for the skin-token directions. */
-export function TokensControlBar({ skin, onSkin, sheet, onSheet, isDesktop, onView, desktopWidth, onDesktopWidth }: Props) {
+export function TokensControlBar({ skin, onSkin, page, onPage, modal, onModal, sheet, onSheet, isDesktop, onView, desktopWidth, onDesktopWidth }: Props) {
   const [open, setOpen] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [pagesOpen, setPagesOpen] = useState(false)
+  const current = PAGES.find((p) => p.id === page)!
 
   if (!open) {
     return (
@@ -54,9 +61,32 @@ export function TokensControlBar({ skin, onSkin, sheet, onSheet, isDesktop, onVi
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
         <div style={{ flex: '0 0 auto' }}>
           <div style={{ fontFamily: 'var(--f-display)', fontWeight: 900, fontSize: 18, textTransform: 'uppercase', lineHeight: 1 }}>Vegangster skin — WTF Games</div>
-          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>Their demo, module for module · Oswald trial · every token in their own names</div>
+          <div style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 4 }}>Their demo, page for page · Oswald · every token in their own names</div>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ position: 'relative' }}>
+            <button onClick={() => setPagesOpen((o) => !o)} style={{ ...pill(true, '#000', '#fff'), border: '1px solid var(--c-border)', padding: '8px 12px', display: 'inline-flex', gap: 8, alignItems: 'center' }}>
+              <span style={{ fontSize: 9, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--c-text-faint)' }}>Page</span>
+              {current.label} ▾
+            </button>
+            {pagesOpen && (
+              <>
+                <div onClick={() => setPagesOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 99999 }} />
+                <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, zIndex: 100000, minWidth: 300, background: '#0e0e12', border: '1px solid var(--c-border)', borderRadius: 12, padding: 6, boxShadow: '0 16px 40px rgba(0,0,0,.5)' }}>
+                  {PAGES.map((p) => (
+                    <button key={p.id} onClick={() => { onPage(p.id); setPagesOpen(false) }} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, width: '100%', textAlign: 'left', background: p.id === page ? 'rgba(0,255,0,.09)' : 'transparent', border: 'none', borderRadius: 8, padding: '8px 10px', cursor: 'pointer', color: '#fff', fontFamily: 'inherit' }}>
+                      <span style={{ fontWeight: 700, fontSize: 12.5 }}>{p.label}</span>
+                      <span style={{ fontSize: 10.5, color: 'var(--c-text-faint)', fontFamily: 'ui-monospace, Menlo, monospace' }}>{p.theirs}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          <div style={pillRow} title="Open a dialog over the page">
+            <button onClick={() => onModal(modal === 'login' ? null : 'login')} style={pill(modal === 'login', '#fff', '#000')}>Login</button>
+            <button onClick={() => onModal(modal === 'signup' ? null : 'signup')} style={pill(modal === 'signup', '#fff', '#000')}>Sign up</button>
+          </div>
           <div style={pillRow}>
             <button onClick={() => onView('mobile')} style={pill(!isDesktop, 'var(--c-green)', '#000')}>Mobile</button>
             <button onClick={() => onView('desktop')} style={pill(isDesktop, 'var(--c-green)', '#000')}>Desktop</button>
@@ -74,7 +104,7 @@ export function TokensControlBar({ skin, onSkin, sheet, onSheet, isDesktop, onVi
           <button onClick={copyCss} title="Copy this skin as Vegangster's :root token block" style={{ ...pill(true, copied ? 'var(--c-green)' : '#000', copied ? '#000' : '#fff'), border: '1px solid var(--c-border)', padding: '8px 12px' }}>
             {copied ? 'Copied ✓' : 'Copy CSS'}
           </button>
-          <a href="https://demo.vegangster.com/" target="_blank" rel="noreferrer" style={{ ...pill(true, '#000', 'var(--c-text-muted)'), border: '1px solid var(--c-border)', padding: '8px 12px', textDecoration: 'none' }}>
+          <a href={`https://demo.vegangster.com${current.theirs.replace('/…', '')}`} target="_blank" rel="noreferrer" style={{ ...pill(true, '#000', 'var(--c-text-muted)'), border: '1px solid var(--c-border)', padding: '8px 12px', textDecoration: 'none' }}>
             Their demo ↗
           </a>
           <button onClick={() => setOpen(false)} title="Hide controls" style={{ background: 'transparent', border: '1px solid var(--c-border)', borderRadius: 9999, width: 28, height: 28, color: 'var(--c-text-muted)', cursor: 'pointer', fontSize: 14, lineHeight: 1 }}>×</button>
